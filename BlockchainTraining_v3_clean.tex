@@ -1,0 +1,1704 @@
+﻿\documentclass[12pt,a4paper]{article}
+
+% 基础包
+\usepackage[utf8]{inputenc}
+\usepackage{xeCJK}
+\usepackage{fontspec}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\usepackage{tabularx}
+\usepackage{ragged2e}
+\usepackage{draftwatermark}
+\usepackage{eso-pic}
+
+\setCJKmainfont{SimSun}
+\setCJKsansfont{SimHei}
+\setCJKmonofont{FangSong}
+\newfontfamily\monoascii{Courier New}
+
+\geometry{margin=2.5cm,top=3cm,bottom=2.5cm}
+
+% 颜色定义
+\definecolor{PrimaryBlue}{HTML}{2E5090}
+\definecolor{AccentOrange}{HTML}{E67E22}
+\definecolor{DarkText}{HTML}{2C3E50}
+\definecolor{LightBG}{HTML}{F8F9FA}
+\definecolor{ExamBG}{HTML}{FFF8E7}
+\definecolor{TheoryBG}{HTML}{F0F7FF}
+\definecolor{ConfidentialRed}{HTML}{C41E3A}
+\definecolor{InternalGray}{HTML}{4A4A4A}
+
+% tcolorbox设置
+\tcbuselibrary{skins,breakable}
+
+\newtcolorbox{keypointbox}{
+  colback=LightBG,
+  colframe=PrimaryBlue,
+  boxrule=0.5pt,
+  arc=4pt,
+  fonttitle=\bfseries\color{PrimaryBlue},
+  title=重点提示,
+  left=8pt,right=8pt,top=8pt,bottom=8pt
+}
+
+\newtcolorbox{exambox}{
+  colback=ExamBG,
+  colframe=AccentOrange,
+  boxrule=0.5pt,
+  arc=4pt,
+  fonttitle=\bfseries\color{AccentOrange},
+  title=重点提示,
+  left=8pt,right=8pt,top=8pt,bottom=8pt
+}
+
+\newtcolorbox{theorybox}{
+  colback=TheoryBG,
+  colframe=PrimaryBlue,
+  boxrule=0.5pt,
+  arc=4pt,
+  fonttitle=\bfseries\color{PrimaryBlue},
+  title=理论解析,
+  left=8pt,right=8pt,top=8pt,bottom=8pt,
+  before upper={\setlength{\parindent}{0pt}},
+  after upper={\setlength{\parindent}{0pt}\normalfont}
+}
+
+% 代码样式
+\lstset{
+  basicstyle=\small\monoascii,
+  breaklines=true,
+  frame=single,
+  backgroundcolor=\color{LightBG},
+  rulecolor=\color{PrimaryBlue!30},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{PrimaryBlue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{AccentOrange},
+  showstringspaces=false,
+  tabsize=2,
+  xleftmargin=2em,
+  framexleftmargin=1.5em
+}
+
+% Header/footer - 内部资料样式
+\fancyhf{}
+\fancyhead[L]{\small\color{ConfidentialRed}\bfseries [内部资料·禁止外泄]}
+\fancyhead[R]{\small\color{DarkText}2026年安徽省区块链技术及应用技能赛}
+\fancyfoot[C]{\thepage}
+\fancyfoot[L]{\scriptsize\color{ConfidentialRed} 内部培训资料，严禁外传}
+\fancyfoot[R]{\scriptsize\color{InternalGray} 仅供参赛选手使用}
+\addtolength{\headheight}{4pt}
+\pagestyle{fancy}
+
+% 添加水印
+\SetWatermarkText{内部资料}
+\SetWatermarkScale{0.8}
+\SetWatermarkColor{ConfidentialRed}
+\SetWatermarkAngle{45}
+\SetWatermarkLightness{0.9}
+
+% 标题格式
+\titleformat{\section}{\Large\bfseries\color{PrimaryBlue}}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries\color{DarkText}}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{DarkText}}{\thesubsubsection}{1em}{}
+
+\begin{document}
+
+% =================== 封面 ===================
+\begin{titlepage}
+\centering
+
+\vspace*{2cm}
+
+{\Huge\bfseries\color{PrimaryBlue} 区块链技术及应用技能赛\par}
+\vspace{0.8cm}
+{\LARGE\color{DarkText} 赛前培训资料\par}
+
+\vspace{2cm}
+
+\begin{tikzpicture}[scale=1.2]
+\draw[PrimaryBlue, line width=1pt] (-4,0) -- (4,0);
+\draw[PrimaryBlue, fill=PrimaryBlue] (-4,0) circle (4pt);
+\draw[PrimaryBlue, fill=PrimaryBlue] (-2,0) circle (4pt);
+\draw[PrimaryBlue, fill=PrimaryBlue] (0,0) circle (4pt);
+\draw[PrimaryBlue, fill=PrimaryBlue] (2,0) circle (4pt);
+\draw[PrimaryBlue, fill=PrimaryBlue] (4,0) circle (4pt);
+\draw[PrimaryBlue, thick] (-4,0) -- (-2,0);
+\draw[PrimaryBlue, thick] (-2,0) -- (0,0);
+\draw[PrimaryBlue, thick] (0,0) -- (2,0);
+\draw[PrimaryBlue, thick] (2,0) -- (4,0);
+
+\node at (-4,-0.6) {\small 区块1};
+\node at (-2,-0.6) {\small 区块2};
+\node at (0,-0.6) {\small 区块3};
+\node at (2,-0.6) {\small 区块4};
+\node at (4,-0.6) {\small 区块5};
+\end{tikzpicture}
+
+\vspace{1.5cm}
+
+{\Large\color{DarkText} 参赛选手内部培训资料\par}
+\vspace{0.5cm}
+{\large\color{InternalGray} 2026年安徽省区块链技术及应用技能赛\par}
+
+\vspace{1.2cm}
+
+% 内部资料标识框
+\begin{tcolorbox}[
+  colback=ConfidentialRed!5,
+  colframe=ConfidentialRed,
+  boxrule=1.5pt,
+  arc=3pt,
+  width=0.75\textwidth,
+  halign=center
+]
+{\Huge\bfseries\color{ConfidentialRed} 内部资料}\\[8pt]
+{\Large\color{InternalGray} 严禁外传 · 禁止复制 · 仅供参赛选手使用}
+\end{tcolorbox}
+
+\vspace{2.5cm}
+
+{\large\color{InternalGray} 
+\begin{tabular}{c}
+安徽省电子学会 · 安徽省计算机学会 · 巢湖学院 · 中科晶格 \\
+\vspace{0.3cm}
+2026年5月
+\end{tabular}
+}
+
+\vfill
+
+% 保密声明框
+\begin{tcolorbox}[
+  colback=ConfidentialRed!8,
+  colframe=ConfidentialRed,
+  boxrule=2pt,
+  arc=4pt,
+  width=0.85\textwidth,
+  halign=center
+]
+{\Large\bfseries\color{ConfidentialRed} 保密声明}\\[8pt]
+{\normalsize\color{InternalGray}
+本资料为\textbf{内部培训资料}，仅供参赛选手使用。\\[3pt]
+\textbf{严禁}以任何形式外传、复制、拍照或上传至互联网。\\[3pt]
+违者将取消参赛资格，并追究相关责任。
+}
+\end{tcolorbox}
+
+\end{titlepage}
+
+\newpage
+\tableofcontents
+
+\newpage
+
+% =================== 第1章 区块链零基础入门 ===================
+\section{区块链零基础入门}
+
+\subsection{计算机基础知识}
+
+本节梳理最核心的计算机基础概念，可能以选择题或判断题形式出现。
+
+\subsubsection{进制与编码}
+
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{二进制（Bin）}：计算机内部只用0和1两种状态，比特币的Hash运算是二进制层面的计算
+\item \textbf{十六进制（Hex）}：二进制太长，用十六进制表示更简洁。SHA-256的输出就是64个十六进制字符
+\item \textbf{字符编码}：UTF-8是互联网上最通用的字符编码，中文在区块链系统中以UTF-8存储
+\item \textbf{Base58编码}：比特币地址使用Base58Check编码，去掉了容易混淆的字符（0、O、l、I），更 human-readable
+\end{itemize}
+
+\begin{keypointbox}
+记住：SHA-256输出64个十六进制字符 = 256位二进制 = 32字节
+\end{keypointbox}
+
+\subsubsection{网络基础}
+
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{IP地址}：互联网上的"门牌号"，区块链节点通过IP互相通信
+\item \textbf{DNS}：域名系统，把人类可读的网址（如google.com）转成IP地址
+\item \textbf{HTTP/HTTPS}：网页传输协议，区块链浏览器使用HTTPS保证安全
+\item \textbf{P2P网络}：点对点网络，区块链的基础架构。没有中心服务器，所有节点平等
+\end{itemize}
+
+\subsubsection{数据库基础}
+
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{关系型数据库}：MySQL、Oracle，用表格存储数据，有行和列
+\item \textbf{键值对数据库}：Redis、LevelDB，用Key-Value存储，区块链常用
+\item \textbf{分布式数据库}：数据分散存储在多台机器上，区块链是特殊的分布式数据库
+\item \textbf{ACID特性}：原子性、一致性、隔离性、持久性。传统数据库追求ACID，区块链追求最终一致性
+\end{itemize}
+
+\subsubsection{JSON格式}
+
+区块链中大量数据以JSON格式传输和存储。
+
+\begin{lstlisting}
+{
+  "name": "Alice",
+  "age": 25,
+  "isStudent": false,
+  "courses": ["Math", "CS", "Blockchain"]
+}
+\end{lstlisting}
+
+重点提示：JSON格式看起来像这样——``{\"key\": \"value\", \"number\": 123}''。以太坊的智能合约调用和大多数区块链浏览器都返回JSON数据。
+
+\subsection{职业道德与法律法规}
+
+\subsubsection{职业道德基本知识}
+
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{诚实守信}：区块链行业强调透明和可追溯，从业者必须诚实记录交易和数据
+\item \textbf{保护用户隐私}：虽然区块链数据公开，但用户的真实身份需要保护，不能随意泄露
+\item \textbf{持续学习}：区块链技术更新快，从业者需要不断学习新技术和新标准
+\item \textbf{安全意识}：私钥管理、智能合约安全是区块链的核心，任何疏忽都可能导致巨大损失
+\end{itemize}
+
+\subsubsection{相关法律法规}
+
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{《中华人民共和国密码法》}（2020年1月1日实施）
+  \begin{itemize}
+  \item 规范密码应用和管理，促进密码事业发展
+  \item 密码分为核心密码、普通密码和商用密码
+  \item 区块链中使用的SM2/SM3/SM4属于商用密码
+  \end{itemize}
+\item \textbf{《区块链信息服务管理规定》}（2019年2月15日实施）
+  \begin{itemize}
+  \item 要求区块链信息服务提供者进行备案
+  \item 禁止利用区块链传播违法信息
+  \item 要求对使用者进行真实身份信息认证
+  \end{itemize}
+\item \textbf{《数据安全法》}（2021年9月1日实施）
+  \begin{itemize}
+  \item 规范数据处理活动，保障数据安全
+  \item 重要数据需要分类分级保护
+  \end{itemize}
+\item \textbf{《个人信息保护法》}（2021年11月1日实施）
+  \begin{itemize}
+  \item 规范个人信息处理活动
+  \item 区块链上存储个人信息需要符合法律规定
+  \end{itemize}
+\end{itemize}
+
+\begin{exambox}
+重点提示：法律部分需要知道有哪些规定存在，以及规定的核心目的（如密码法是为了规范商业密码使用）。不需要背诵条文。
+\end{exambox}
+
+\subsection{通证与资产应用（补充）}
+
+通证（Token）是区块链的独特概念。
+
+\subsubsection{什么是通证（Token）？}
+
+简单说：\textbf{通证就是记录在区块链上的"权益凭证"}。
+
+\begin{theorybox}
+\textbf{通证的三个特征：}
+\begin{enumerate}
+\item \textbf{可流通}：可以在区块链上自由转让（如转让NFT所有权）
+\item \textbf{可验证}：任何人都可以在链上验证其真伪（查区块链即可）
+\item \textbf{可编程}：可以通过智能合约设定规则（自动分红、限量发行等）
+\end{enumerate}
+\end{theorybox}
+
+类比：门票就是一种通证——有编号（可验证）、可转让（给他人）、有时效（可编程）。
+
+\subsubsection{通证的分类}
+
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{同质化通证（FT，Fungible Token）}：每个Token都一样，可以互换。类比人民币——每张100元价值相等。代表：比特币（BTC）、以太坊（ETH）
+\item \textbf{非同质化通证（NFT，Non-Fungible Token）}：每个Token唯一，不可互换。类比房产证——每个房产证对应一套唯一的房子。代表：数字艺术品、游戏道具
+\item \textbf{证券化通证（STO）}：代表真实资产的所有权（如房地产、股票），受证券法规管
+\end{itemize}
+
+\begin{keypointbox}
+重点：BTC/ETH = 同质化通证（FT），每个都一样；NFT = 非同质化通证，每个都唯一。
+\end{keypointbox}
+
+% =================== 第2章 区块链核心概念 ===================
+\section{区块链核心概念}
+
+\subsection{什么是区块链？}
+
+区块链（Blockchain）本质上是一个\textbf{分布式数据库}，但它和普通数据库有一个本质区别：\textbf{数据一旦写入，就几乎不可能被修改或删除}。
+
+用更通俗的话说：\textbf{区块链就是一个大家共同维护的、无法作弊的电子账本}。
+
+\subsubsection*{从记账场景理解}
+
+传统模式：你把钱存银行，银行在它的服务器上记账。你只能\textbf{相信}银行不会篡改你的记录。
+
+区块链模式：\textbf{所有参与者都保存一份完整的账本副本}。任何人修改了自己的账本，其他人的账本都会拒绝匹配。就像全班同学都抄了一份课程表，有人偷偷改了自己的，老师一比对就知道谁在说谎。
+
+\begin{theorybox}
+\textbf{区块链的核心特点：}
+\begin{enumerate}
+\item \textbf{去中心化}：没有单一的控制者，所有节点平等
+\item \textbf{不可篡改}：数据一旦写入，修改成本极高（需要控制超过51\%的节点）
+\item \textbf{可追溯}：每一笔交易都有完整的历史记录，可以追踪资金流向
+\item \textbf{透明性}：所有交易对参与者公开（虽然身份可能是匿名的）
+\end{enumerate}
+\end{theorybox}
+
+\subsection{区块链 vs 传统数据库}
+
+\begin{center}
+\begin{tabular}{|l|p{5cm}|p{5cm}|}
+\hline
+\rowcolor{LightBG}
+\textbf{特性} & \textbf{传统数据库} & \textbf{区块链} \\
+\hline
+数据修改 & 管理员可以随时修改 & 几乎不可能修改 \\
+\hline
+控制权 & 中心化（公司/机构控制） & 去中心化（共识机制决定） \\
+\hline
+信任基础 & 相信中心机构 & 相信密码学和共识机制 \\
+\hline
+查询速度 & 快（毫秒级） & 慢（秒级甚至分钟级） \\
+\hline
+存储成本 & 低 & 高（每个节点都存一份） \\
+\hline
+适合场景 & 高频交易、大数据 & 价值转移、存证溯源 \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{keypointbox}
+区块链不是万能的！它牺牲了效率换取了信任。如果你的场景不需要"去信任"，传统数据库可能更合适。
+\end{keypointbox}
+
+\subsection{区块链的类型}
+
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{公链（Public Blockchain）}：任何人都可以参与，完全去中心化
+  \begin{itemize}
+  \item 代表：比特币、以太坊
+  \item 特点：匿名、开放、抗审查
+  \item 共识：PoW、PoS
+  \end{itemize}
+\item \textbf{联盟链（Consortium Blockchain）}：多个机构共同维护，部分去中心化
+  \begin{itemize}
+  \item 代表：Hyperledger Fabric、R3 Corda、FISCO BCOS
+  \item 特点：需要许可、效率较高、适合企业
+  \item 共识：PBFT、Raft
+  \end{itemize}
+\item \textbf{私链（Private Blockchain）}：单一机构控制，中心化
+  \begin{itemize}
+  \item 代表：企业内部系统
+  \item 特点：完全可控、效率最高、去中心化程度低
+  \item 用途：内部审计、数据共享
+  \end{itemize}
+\end{itemize}
+
+\begin{exambox}
+中国主要发展\textbf{联盟链}，因为：1）符合监管要求；2）性能更高；3）适合企业级应用。比特币、以太坊是公链的代表。
+\end{exambox}
+
+% =================== 第3章 密码学基础 ===================
+\section{密码学基础}
+
+密码学是区块链的基石。区块链中几乎所有的安全机制都依赖于密码学。本章内容占比很高，务必理解原理。
+
+\subsection{Hash函数（哈希函数）}
+
+\subsubsection{什么是Hash？}
+
+Hash函数是一个\textbf{单向函数}，可以把任意长度的输入转换成固定长度的输出。
+
+\begin{lstlisting}
+输入: "Hello World"
+SHA-256输出: a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e
+
+输入: "Hello World!" (只多了一个感叹号)
+SHA-256输出: 7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069
+\end{lstlisting}
+
+\begin{theorybox}
+\textbf{Hash函数的核心特性：}
+\begin{enumerate}
+\item \textbf{单向性}：知道输出，无法反推出输入（除非暴力破解）
+\item \textbf{确定性}：同样的输入，永远得到同样的输出
+\item \textbf{雪崩效应}：输入哪怕改变1bit，输出完全不同
+\item \textbf{抗碰撞}：很难找到两个不同的输入，产生相同的输出
+\end{enumerate}
+\end{theorybox}
+
+\subsubsection{区块链中的Hash应用}
+
+\begin{enumerate}[leftmargin=1.5em]
+\item \textbf{区块链接}：每个区块存储前一个区块的Hash，形成链式结构
+\item \textbf{交易指纹}：每笔交易计算Hash作为唯一标识
+\item \textbf{数据完整性}：任何数据篡改都会导致Hash变化，立即被发现
+\item \textbf{工作量证明（PoW）}：矿工通过计算Hash来竞争记账权
+\end{enumerate}
+
+\subsubsection{常用Hash算法}
+
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{SHA-256}：比特币使用的算法，输出256位（64个十六进制字符）
+\item \textbf{SM3}：中国国密标准，输出256位，与SHA-256安全强度相当
+\item \textbf{Keccak-256}：以太坊使用的算法（SHA-3标准）
+\item \textbf{RIPEMD-160}：比特币地址生成中使用的算法，输出160位
+\end{itemize}
+
+\begin{keypointbox}
+重点：SHA-256输出是64个十六进制字符（每字符=4bit，$64\times4=256$bit）。SM3是中国国密标准，与SHA-256安全强度相当。区块链中优先学习SHA-256和SM3。
+\end{keypointbox}
+
+\subsubsection{Python计算Hash}
+
+\begin{lstlisting}
+import hashlib
+
+# SHA-256计算
+data = b"Hello Blockchain"
+hash_result = hashlib.sha256(data).hexdigest()
+print(f"SHA-256: {hash_result}")
+
+# 验证雪崩效应
+data1 = b"blockchain"
+data2 = b"blockchaiN"  # 只改一个大写字母
+h1 = hashlib.sha256(data1).hexdigest()
+h2 = hashlib.sha256(data2).hexdigest()
+print(f"原始: {h1}")
+print(f"修改: {h2}")
+print(f"不同字符数: {sum(c1 != c2 for c1, c2 in zip(h1, h2))}")
+\end{lstlisting}
+
+\subsection{非对称加密（公钥加密）}
+
+\subsubsection{核心概念}
+
+非对称加密使用\textbf{一对密钥}：
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{公钥（Public Key）}：可以公开分享，用于加密和验证签名
+\item \textbf{私钥（Private Key）}：必须保密，用于解密和创建签名
+\end{itemize}
+
+\begin{theorybox}
+\textbf{非对称加密的两个用途：}
+\begin{enumerate}
+\item \textbf{加密通信}：A用B的公钥加密，只有B的私钥能解密
+\item \textbf{数字签名}：A用私钥签名，任何人可以用A的公钥验证
+\end{enumerate}
+\end{theorybox}
+
+\subsubsection{椭圆曲线加密（ECC）}
+
+区块链主要使用\textbf{椭圆曲线加密}（ECC），而不是RSA。
+
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{优势}：相同安全强度下，ECC的密钥更短、计算更快
+  \begin{itemize}
+  \item 256位ECC $\approx$ 3072位RSA的安全强度
+  \item 比特币、以太坊使用secp256k1曲线
+  \item 中国国密SM2使用sm2p256v1曲线
+  \end{itemize}
+\item \textbf{比特币的密钥生成}：
+  \begin{enumerate}
+  \item 生成256位随机数作为私钥
+  \item 使用ECC点乘法从私钥生成公钥
+  \item 对公钥进行Hash运算生成地址
+  \end{enumerate}
+\end{itemize}
+
+\begin{keypointbox}
+\textbf{重点：}256位ECC $\approx$ 3072位RSA的安全强度。区块链（比特币、以太坊）使用ECC（secp256k1曲线）。中国使用SM2（sm2p256v1曲线）。公钥可以分享，私钥必须保密。
+\end{keypointbox}
+
+\subsection{数字签名}
+
+数字签名是区块链身份认证的核心机制。
+
+\subsubsection{签名过程}
+
+\begin{enumerate}[leftmargin=1.5em]
+\item \textbf{创建签名}：用私钥对消息Hash进行"加密"
+\item \textbf{验证签名}：用公钥"解密"并比对Hash
+\end{enumerate}
+
+\begin{lstlisting}
+签名流程：
+消息 -> Hash函数 -> Hash值 -> 私钥签名 -> 签名结果
+验证流程：
+签名结果 + 公钥 -> 解密出Hash值 -> 与消息的新Hash比对
+\end{lstlisting}
+
+\begin{keypointbox}
+\textbf{重点：}
+\begin{itemize}
+\item 签名 = 私钥加密（Hash值）
+\item 验证 = 公钥解密（比对Hash）
+\item 只有私钥持有者能创建有效签名
+\item 任何人都能验证签名真伪
+\item 签名不可伪造、不可抵赖
+\end{itemize}
+\end{keypointbox}
+
+\subsubsection{区块链中的签名应用}
+
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{交易签名}：证明交易确实由资产所有者发起
+\item \textbf{区块签名}：证明区块确实由矿工/验证者生成
+\item \textbf{智能合约调用}：证明调用者身份
+\end{itemize}
+
+\subsection{Merkle Tree（默克尔树）}
+
+Merkle Tree是区块链中组织交易数据的核心数据结构。
+
+\subsubsection{结构和原理}
+
+\begin{lstlisting}
+交易列表: [Tx1, Tx2, Tx3, Tx4]
+
+        [Root Hash]           <- Merkle Root（存区块头）
+         /       \
+   [Hash01]     [Hash23]
+    /    \\       /    \
+[Tx1]  [Tx2]  [Tx3]  [Tx4]   <- 叶子节点（交易Hash）
+
+计算过程:
+Hash0 = Hash(Tx1)
+Hash1 = Hash(Tx2)
+Hash2 = Hash(Tx3)
+Hash3 = Hash(Tx4)
+Hash01 = Hash(Hash0 + Hash1)
+Hash23 = Hash(Hash2 + Hash3)
+Root = Hash(Hash01 + Hash23)
+\end{lstlisting}
+
+\subsubsection{Merkle Tree的优势}
+
+\begin{enumerate}[leftmargin=1.5em]
+\item \textbf{快速验证}：验证一笔交易是否存在，只需要 $O(\log n)$ 的Hash计算
+\item \textbf{轻节点友好}：SPV（简单支付验证）节点只需下载区块头（80字节），不需要下载所有交易
+\item \textbf{防篡改}：任何一笔交易被修改，Merkle Root就会改变，立即被发现
+\end{enumerate}
+
+\begin{lstlisting}
+验证 Tx2 是否在区块中：
+路径：Tx2 -> Hash(Tx3) -> Hash0 -> ... -> Merkle Root
+如果最终计算得到的Merkle Root与区块头中的一致 -> 交易存在
+\end{lstlisting}
+
+\begin{keypointbox}
+重点：Merkle Root存储在区块头中。如果交易列表中有任何一笔被修改，其Merkle Root就会改变。注意Merkle Tree是二叉树，节点数是偶数（奇数时复制最后一个节点）。
+\end{keypointbox}
+
+% =================== 第4章 区块链底层数据结构 ===================
+\section{区块链底层数据结构}
+
+\subsection{区块结构}
+
+一个区块由两部分组成：\textbf{区块头（Block Header）}和\textbf{区块体（Block Body）}。
+
+\subsubsection{区块头（Block Header）}
+
+固定80字节，包含6个字段：
+
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+\rowcolor{LightBG}
+\textbf{字段} & \textbf{长度} & \textbf{说明} \\
+\hline
+Version & 4字节 & 区块版本号 \\
+\hline
+Previous Block Hash & 32字节 & 前一个区块的Hash（链式结构） \\
+\hline
+Merkle Root & 32字节 & 所有交易的Merkle Tree根Hash \\
+\hline
+Timestamp & 4字节 & 区块创建时间（Unix时间戳） \\
+\hline
+Bits & 4字节 & 难度目标（编码后的目标值） \\
+\hline
+Nonce & 4字节 & 随机数（PoW挖矿用） \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{keypointbox}
+重点：区块头总共80字节，是PoW工作量证明的直接操作对象。父区块哈希将区块串成链。Nonce是4字节无符号整数，意味着在4字节范围内（大约43亿次）找不到有效Hash时，需要其他策略（如改变Coinbase交易中的ExtraNonce）。
+\end{keypointbox}
+
+\subsubsection{区块体（Block Body）}
+
+包含交易列表，大小不固定：
+\begin{itemize}[leftmargin=1.5em]
+\item 交易数量（变长整数）
+\item 交易列表（每笔交易200-500字节不等）
+\end{itemize}
+
+比特币区块大小限制：1MB（隔离见证后4MB）
+
+\subsection{交易结构（UTXO模型）}
+
+比特币使用\textbf{UTXO（Unspent Transaction Output）}模型，不是账户余额模型。
+
+\subsubsection{什么是UTXO？}
+
+UTXO = \textbf{未花费的交易输出}。可以理解为"区块链上的零钱"。
+
+\begin{lstlisting}
+类比现实：比特币的"余额"就像你钱包里的现金。
+  - 你有：1张100元、2张50元、5张10元
+  - 钱包余额 = 100 + 50×2 + 10×5 = 250元
+
+比特币也一样：
+  - UTXO #A: 0.5 BTC（来自某笔交易）
+  - UTXO #B: 1.2 BTC（来自另一笔交易）
+钱包余额 = 1.7 BTC
+\end{lstlisting}
+
+\subsubsection{交易过程}
+
+\begin{lstlisting}
+小明要转1 BTC给小红：
+
+小明的UTXO：
+  - UTXO #1: 0.6 BTC
+  - UTXO #2: 0.8 BTC
+  - 总计：1.4 BTC
+
+交易创建：
+  输入：引用 UTXO #1 和 UTXO #2（作为花费）
+  输出：
+  - 新建 UTXO #A: 1.0 BTC（归属小红）
+  - 新建 UTXO #B: 0.399 BTC（归属小明，找零）
+  - 手续费：0.001 BTC（给矿工）
+
+结果：
+  - UTXO #1 和 #2 被标记为"已花费"
+  - UTXO #A 和 #B 成为新的"未花费输出"
+\end{lstlisting}
+
+\begin{keypointbox}
+重点：UTXO模型的核心是"输入引用过去的输出，产生新的输出"。理解UTXO vs 账户余额模型的区别：银行是"记账"（A账户减，B账户加），比特币是"记录每笔零钱的归属"（UTXO的流转）。以太坊使用的是账户余额模型。
+\end{keypointbox}
+
+% =================== 第5章 共识算法 ===================
+\section{共识算法}
+
+共识算法解决的是\textbf{分布式系统中如何达成一致}的问题。
+
+\subsection{拜占庭将军问题}
+
+由Leslie Lamport等人于1982年提出，是区块链共识机制最重要的理论来源。
+
+\begin{lstlisting}
+情境：10位拜占庭将军分别带领一支军队包围了一座敌人城市。
+
+问题：
+- 将军们只能通过信使传递消息（没有电话、没有网络）
+- 其中一些将军可能是叛徒，会发送错误信息
+- 忠诚的将军们需要就"进攻还是撤退"达成一致
+
+问题：如何让所有忠诚的将军就"进攻还是撤退"达成一致的行动计划？
+\end{lstlisting}
+
+将将军视为区块链节点，信使视为网络消息，叛徒视为恶意节点。
+
+\begin{theorybox}
+\textbf{拜占庭容错（BFT）}：系统能容忍最多$f$个恶意节点，仍能达成一致。
+
+\begin{itemize}
+\item $n \geq 3f + 1$：系统能容忍最多$f$个恶意节点（即恶意节点不超过总数的1/3）
+\item 10个将军，最多容忍3个叛徒
+\item 100个节点，最多容忍33个恶意节点
+\end{itemize}
+\end{theorybox}
+
+\subsection{PoW — 工作量证明（Proof of Work）}
+
+\subsubsection{核心思想}
+
+\textbf{谁算力强，谁有话语权}。通过消耗计算资源（算力）来竞争记账权。
+
+矿工不断改变一个叫Nonce的随机数，对区块头反复计算Hash，直到Hash值小于某个目标值。
+
+\begin{lstlisting}
+目标：Hash(区块头 + Nonce) $<$\texttt{0000FFFFFFFFFFFFFFFF}\\ \texttt{FFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+
+矿工尝试：
+Nonce=0    -> Hash=8f8e2a1b3c4d5e6f...
+Nonce=1    -> Hash=3a4b5c6d7e8f9a0b...
+Nonce=...（数十亿次尝试）
+Nonce=12345678 -> Hash=00001a2b3c4d5e6f...  ✓ 找到啦！
+\end{lstlisting}
+
+\subsubsection{PoW的特点}
+
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{优点}：
+  \begin{itemize}
+  \item 安全性高：攻击成本极高（需要控制51\%算力）
+  \item 去中心化程度高：任何人都可以参与挖矿
+  \item 公平性：算力即权力，规则透明
+  \end{itemize}
+\item \textbf{缺点}：
+  \begin{itemize}
+  \item 能耗巨大：比特币年耗电量超过阿根廷全国
+  \item 效率低：每秒只能处理3-7笔交易
+  \item 算力集中：矿池控制大部分算力，有中心化趋势
+  \end{itemize}
+\end{itemize}
+
+\begin{keypointbox}
+重点：PoW的核心是"算力竞争，谁先找到有效Hash谁赢"。难度由Bits字段编码。51\%攻击是PoW的最大威胁，但实际攻击成本远超收益。比特币使用SHA-256d（两次SHA-256）作为PoW函数。
+\end{keypointbox}
+
+\subsection{PoS — 权益证明（Proof of Stake）}
+
+\subsubsection{核心思想}
+
+根据持有的代币数量和时间来选择区块验证者。持有的越多、被锁定的时间越长，被选中出块的概率越高。类似于"股东大会投票"，股份越多，话语权越大。
+
+\begin{lstlisting}
+PoS选择公式（简化）：
+选择概率 $\propto$ 质押代币数量 × 质押时间
+
+示例：
+  - 持有1000 ETH，锁定1年 -> 权重 = 1000 × 1 = 1000
+  - 持有500 ETH，锁定2年 -> 权重 = 500 × 2 = 1000
+  - 权重相同，随机选一个
+\end{lstlisting}
+
+以太坊2.0的PoS使用\textbf{随机化（Randomized）}方法——RANDAO + VDF（可验证延迟函数）产生随机数，结合质押权重选择出块者。
+
+\subsubsection{PoS的特点}
+
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{优点}：
+  \begin{itemize}
+  \item 能耗极低：比PoW节能99.95\%
+  \item 效率高：出块速度快，每秒可处理数千笔交易
+  \item 攻击成本高：攻击者需要购买并质押大量代币，攻击后代币会贬值
+  \end{itemize}
+\item \textbf{缺点}：
+  \begin{itemize}
+  \item 富者愈富：持币多的人更容易获得奖励
+  \item 无利害关系（Nothing at Stake）：验证者可能在多个分叉上同时签名
+  \item 初始分配问题：代币初始分配可能不公平
+  \end{itemize}
+\end{itemize}
+
+\begin{keypointbox}
+重点：PoS中"质押"（Stake）意味着将代币作为保证金。如果验证者作恶，其质押的代币会被罚没（Slashing）。以太坊PoS最多可罚没验证者32 ETH。这比PoW的51\%攻击更经济高效，能耗降低约99.95\%。
+\end{keypointbox}
+
+\subsection{DPoS — 委托权益证明}
+
+\subsubsection{核心思想}
+
+代币持有者\textbf{投票选举}出少数节点（如21个）负责出块和验证。类似于"代议制民主"，大家投票选代表。
+
+\begin{lstlisting}
+EOS的DPoS机制：
+1. EOS持有者投票选出21个"区块生产者"（BP）
+2. 21个BP轮流出块（每3秒一个区块）
+3. BP获得区块奖励，需要回馈社区
+4. 如果BP表现不好，持有者可以随时投票罢免
+\end{lstlisting}
+
+\subsubsection{DPoS的特点}
+
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{优点}：
+  \begin{itemize}
+  \item 效率极高：每秒可处理数千甚至上万笔交易
+  \item 能耗极低：不需要大规模算力竞争
+  \end{itemize}
+\item \textbf{缺点}：
+  \begin{itemize}
+  \item 中心化程度高：只有21个节点控制网络
+  \item 投票率低：大多数代币持有者不参与投票
+  \item 去中心化程度降低——节点数量少，更容易被操控
+  \end{itemize}
+\end{itemize}
+
+\subsection{PBFT — 实用拜占庭容错}
+
+\subsubsection{核心思想}
+
+通过\textbf{多轮投票}达成共识，只要恶意节点不超过总数的1/3，系统就能正常工作。
+
+\subsubsection{三阶段协议}
+
+\begin{enumerate}[leftmargin=1.5em]
+\item \textbf{Request}：客户端向主节点发送请求
+\item \textbf{Pre-Prepare}：主节点验证请求，广播给所有节点
+\item \textbf{Prepare}：节点验证并广播Prepare消息
+\item \textbf{Commit}：节点收到足够多Prepare后，广播Commit消息
+\item \textbf{Reply}：节点收到足够多Commit后，执行并回复客户端
+\end{enumerate}
+
+\begin{theorybox}
+\textbf{PBFT的容错能力：}
+\begin{itemize}
+\item 总节点数 $n$，恶意节点数 $f$
+\item 系统能正常工作的条件：$n \geq 3f + 1$
+\item 即：恶意节点不超过总数的1/3
+\item 4个节点可以容忍1个恶意节点
+\item 10个节点可以容忍3个恶意节点
+\end{itemize}
+\end{theorybox}
+
+\subsubsection{PBFT的特点}
+
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{优点}：
+  \begin{itemize}
+  \item 即时确认：交易一旦写入就最终确定，不需要等待多个区块确认
+  \item 高吞吐量：每秒可处理数千笔交易
+  \item 确定性：不会出现分叉
+  \end{itemize}
+\item \textbf{缺点}：
+  \begin{itemize}
+  \item 扩展性差：节点数量增加，通信复杂度$O(n^2)$急剧上升
+  \item 中心化趋势：通常用于联盟链，节点数量有限
+  \item 不适合公链：公链节点太多，PBFT通信开销太大
+  \end{itemize}
+\end{itemize}
+
+\begin{keypointbox}
+重点：
+\begin{itemize}
+\item PBFT适合联盟链（节点少、信任度较高）
+\item PoW/PoS适合公链（节点多、无需许可）
+\item PBFT是"投票"机制，PoW是"算力竞争"机制
+\item 联盟链常用PBFT（如Hyperledger Fabric），公链用PoW/PoS
+\end{itemize}
+\end{keypointbox}
+
+\subsection{Raft — 非拜占庭容错共识}
+
+\subsubsection{核心思想}
+
+Raft是\textbf{非拜占庭容错}算法，假设所有节点都是诚实的，只处理节点故障（宕机、网络分区），不处理恶意节点。
+
+\subsubsection{三种角色}
+
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{Leader（领导者）}：负责处理所有客户端请求，复制日志到Follower
+\item \textbf{Follower（跟随者）}：接收并存储Leader的日志，被动响应
+\item \textbf{Candidate（候选人）}：Leader宕机时，Follower变成Candidate，竞选新Leader
+\end{itemize}
+
+\subsubsection{Raft vs PBFT}
+
+\begin{center}
+\begin{tabular}{|l|p{5cm}|p{5cm}|}
+\hline
+\rowcolor{LightBG}
+\textbf{特性} & \textbf{Raft} & \textbf{PBFT} \\
+\hline
+容错类型 & 崩溃容错（非恶意） & 拜占庭容错（含恶意节点） \\
+\hline
+节点假设 & 所有节点诚实 & 最多1/3节点恶意 \\
+\hline
+通信复杂度 & $O(n)$ & $O(n^2)$ \\
+\hline
+性能 & 更高（消息少） & 较低（多轮投票） \\
+\hline
+适用场景 & 私有链、数据库复制 & 联盟链、跨机构协作 \\
+\hline
+代表项目 & etcd、Consul & Hyperledger Fabric \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{keypointbox}
+重点：Raft vs PBFT的区别：
+\begin{itemize}
+\item Raft假设节点只是故障，不会作恶（崩溃容错）
+\item PBFT假设可能有节点作恶（拜占庭容错）
+\item 私有链/内网用Raft，联盟链用PBFT
+\end{itemize}
+\end{keypointbox}
+
+% =================== 第6章 智能合约 ===================
+\section{智能合约}
+
+\subsection{什么是智能合约？}
+
+智能合约（Smart Contract）是\textbf{运行在区块链上的程序代码}，可以自动执行合约条款。
+
+\begin{theorybox}
+\textbf{智能合约的核心特点：}
+\begin{enumerate}
+\item \textbf{自动执行}：满足条件自动触发，无需人工干预
+\item \textbf{不可篡改}：一旦部署，代码无法修改
+\item \textbf{透明公开}：代码对所有参与者可见
+\item \textbf{去中心化}：在区块链网络的所有节点上运行
+\end{enumerate}
+\end{theorybox}
+
+\subsubsection{生活化类比}
+
+Nick Szabo举了一个经典例子：自动售货机。
+
+\begin{lstlisting}
+传统合同：
+  1. 你和小明签合同："你给我100元，我给你一个商品"
+  2. 你给了100元
+  3. 小明可能反悔不给你商品
+  4. 你需要去法院起诉
+
+自动售货机（智能合约）：
+  1. 你投入100元（满足条件）
+  2. 你按下可乐按钮（发出指令）
+  3. 机器自动吐出可乐（合同自动执行）
+  ——整个过程不需要人工介入，不需要法院介入！
+\end{lstlisting}
+
+Nick Szabo认为，法律合同的执行成本很高，而自动化的数字合同可以大幅降低成本。但1994年时没有可信的执行环境，直到以太坊出现。
+
+\subsection{以太坊和EVM}
+
+\subsubsection{以太坊的诞生}
+
+Vitalik Buterin（V神）2013年提出以太坊概念，2015年正式上线。
+
+\textbf{以太坊 = 比特币的区块链 + 图灵完备的虚拟机}
+
+\begin{itemize}[leftmargin=1.5em]
+\item 比特币的脚本系统：简单、非图灵完备（不能循环）
+\item 以太坊的EVM：图灵完备，可以执行任意复杂逻辑
+\end{itemize}
+
+\subsubsection{EVM（以太坊虚拟机）}
+
+EVM是以太坊智能合约的运行环境：
+\begin{itemize}[leftmargin=1.5em]
+\item 每个以太坊节点都运行EVM
+\item 智能合约代码在EVM中执行
+\item EVM是\textbf{沙箱环境}，合约不能访问外部网络、文件系统等
+\item 合约之间可以互相调用
+\end{itemize}
+
+\subsubsection{Gas机制}
+
+执行智能合约需要消耗\textbf{Gas}，防止无限循环和资源滥用。
+
+\begin{lstlisting}
+简单转账：21000 Gas（固定）
+执行一次算术运算：3 Gas
+存储一个32字节数据：20000 Gas
+执行一个合约函数：取决于函数复杂度
+
+Gas计算示例：
+  用户A调用一个复杂的DeFi合约：
+  - 基本操作Gas：50000
+  - 存储写入Gas：80000
+  - Gas Price：50 Gwei（0.00000005 ETH）
+  - 总费用 = 130000 × 50 Gwei = 0.0065 ETH
+\end{lstlisting}
+
+\begin{keypointbox}
+重点：Gas是防止无限循环和资源滥用的机制。Gas Limit是上限，防止意外超额。EVM（以太坊虚拟机）是智能合约的运行环境，与比特币的脚本系统不同。
+\end{keypointbox}
+
+\subsection{Solidity合约示例}
+
+\begin{lstlisting}[language=Solidity]
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract SimpleStorage {
+    uint256 storedData;
+    
+    function set(uint256 x) public {
+        storedData = x;
+    }
+    
+    function get() public view returns (uint256) {
+        return storedData;
+    }
+}
+\end{lstlisting}
+
+调用这个合约：
+\begin{lstlisting}
+set(42)  ->  交易被广播到网络
+           ->  矿工打包到区块
+           ->  所有节点执行set函数
+           ->  storedData变成42
+           ->  状态更新到区块链
+
+get()    ->  本地查询，不消耗Gas
+           ->  返回42
+\end{lstlisting}
+
+% =================== 第7章 区块链的类型 ===================
+\section{区块链的类型}
+
+\subsection{公链（Public Blockchain）}
+
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{特点}：完全开放，任何人可以参与，无需许可
+\item \textbf{代表}：比特币、以太坊
+\item \textbf{共识}：PoW、PoS
+\item \textbf{优势}：去中心化程度高，抗审查，全球可用
+\item \textbf{劣势}：性能低，能耗高，监管困难
+\end{itemize}
+
+\subsection{联盟链（Consortium Blockchain）}
+
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{特点}：多个机构共同维护，需要许可才能加入
+\item \textbf{代表}：Hyperledger Fabric、R3 Corda、FISCO BCOS
+\item \textbf{共识}：PBFT、Raft
+\item \textbf{优势}：性能高，可监管，适合企业应用
+\item \textbf{劣势}：去中心化程度较低
+\end{itemize}
+
+\subsection{私链（Private Blockchain）}
+
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{特点}：单一机构控制，完全中心化
+\item \textbf{用途}：企业内部审计、数据共享
+\item \textbf{优势}：效率最高，完全可控
+\item \textbf{劣势}：去中心化程度最低
+\end{itemize}
+
+\begin{keypointbox}
+重点：联盟链是中国主推方向，在政务、金融、供应链等领域广泛落地。应重点掌握联盟链的PBFT/Raft共识机制和实际应用场景。
+\end{keypointbox}
+
+% =================== 第8章 区块链应用领域 ===================
+\section{区块链应用领域}
+
+\subsection{数字货币}
+
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{比特币}：数字黄金，价值存储
+\item \textbf{稳定币}：USDT、USDC，锚定法币价值
+\item \textbf{央行数字货币（CBDC）}：数字人民币（e-CNY）
+\end{itemize}
+
+\subsection{供应链金融}
+
+\begin{itemize}[leftmargin=1.5em]
+\item 应收账款上链，可追溯、可拆分
+\item 降低融资成本，提高资金周转效率
+\item 代表：蚂蚁链、微众银行供应链金融平台
+\end{itemize}
+
+\subsection{政务与存证}
+
+\begin{itemize}[leftmargin=1.5em]
+\item 电子证照上链，防篡改、易验证
+\item 司法存证，提高证据可信度
+\item 代表：北京互联网法院"天平链"
+\end{itemize}
+
+\subsection{数字身份}
+
+\begin{itemize}[leftmargin=1.5em]
+\item DID（去中心化身份），用户自主控制
+\item 可验证凭证（VC），保护隐私
+\item 应用：学历认证、职业资格认证
+\end{itemize}
+
+% =================== 第9章 中国区块链发展与国密算法 ===================
+\section{中国区块链发展与国密算法}
+
+\subsection{国密算法概述}
+
+中国自主研发的一系列商用密码算法，包括：
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{SM2}：非对称加密算法（对应ECDSA/RSA）
+\item \textbf{SM3}：Hash算法（对应SHA-256）
+\item \textbf{SM4}：对称加密算法（对应AES）
+\end{itemize}
+
+\subsection{SM2 — 非对称加密}
+
+基于椭圆曲线密码学，使用sm2p256v1曲线。
+
+\begin{lstlisting}
+SM2密钥生成：
+1. 生成256位随机数作为私钥
+2. 使用椭圆曲线点乘法生成公钥
+3. 公钥格式：04 + x坐标(32字节) + y坐标(32字节)
+
+SM2签名过程：
+1. 计算消息Hash：e = SM3(message)
+2. 生成随机数k
+3. 计算椭圆曲线点：(x1, y1) = k * G
+4. 计算r = (e + x1) mod n
+5. 计算s = ((1 + d)^-1 * (k - r*d)) mod n
+6. 签名结果：(r, s)
+\end{lstlisting}
+
+\begin{keypointbox}
+重点：SM2是中国国密非对称加密算法，与ECDSA对应。如果遇到密码学计算题，关注SM2的签名公式 $(r, s)$ 和验证条件。
+\end{keypointbox}
+
+\subsection{SM3 — Hash算法}
+
+输出256位Hash值，与SHA-256安全强度相当。
+
+\begin{lstlisting}
+SM3计算示例（简化）：
+输入: "Hello SM3"
+SM3输出: 66c7f0f462eeedd9d1f2d46b...（64个十六进制字符）
+
+注意：SM3和SHA-256的输出格式相同（64个十六进制字符），
+但内部算法不同，输出结果也不同。
+\end{lstlisting}
+
+\subsection{SM4 — 对称加密算法}
+
+分组长度为128位，密钥长度128位。
+
+\begin{lstlisting}
+SM4加密模式：
+- ECB：电子密码本模式（不推荐，相同明文产生相同密文）
+- CBC：密码分组链接模式（推荐，需要IV）
+- CTR：计数器模式（推荐，可并行加密）
+
+应用场景：
+- 数据传输加密
+- 存储加密
+- 区块链隐私保护（如加密交易数据）
+\end{lstlisting}
+
+% =================== 第10章 数据结构基础 ===================
+\section{数据结构基础}
+
+\subsection{链表（Linked List）}
+
+\begin{lstlisting}
+普通链表：
+  节点A -> 节点B -> 节点C -> 节点D
+  指针存储下一个节点的内存地址
+
+Hash指针链表（区块链）：
+  节点A -> 节点B -> 节点C -> 节点D
+  节点A的"指针" = Hash(节点B的内容)
+  
+  优势：即使有人修改了节点C的数据，
+  节点D中存储的Hash(节点C的内容) 立刻失效，
+  整个篡改行为被发现。
+\end{lstlisting}
+
+\begin{keypointbox}
+重点：区块链使用链表结构，每个区块通过Hash指针指向前一个区块。Hash指针 = 数据内容Hash + 位置指针，即使数据移动，Hash值仍然有效，保证链的完整性。
+\end{keypointbox}
+
+\subsection{树（Tree）}
+
+\subsubsection{二叉树}
+
+每个节点最多有两个子节点。
+
+\subsubsection{Merkle Tree}
+
+见第3章，区块链核心数据结构。
+
+\subsubsection{MPT（Merkle Patricia Tree）}
+
+以太坊使用的数据结构，结合了：
+\begin{itemize}[leftmargin=1.5em]
+\item Merkle Tree：验证数据完整性
+\item Patricia Trie：高效存储和检索
+\end{itemize}
+
+\begin{keypointbox}
+重点：以太坊使用MPT而非比特币的简单Merkle Tree，因为MPT支持增删改查操作（而Merkle Tree主要用于验证完整性）。MPT是理解以太坊区块结构的关键。
+\end{keypointbox}
+
+% =================== 第11章 链上身份（DID） ===================
+\section{链上身份（DID）}
+
+\subsection{什么是DID？}
+
+DID（Decentralized Identifier，去中心化标识符）是\textbf{用户自主控制}的数字身份，不依赖中心化机构（如政府、公司）。
+
+\subsubsection{DID的格式}
+
+\begin{lstlisting}
+did:example:123456789abcdefghi
+├── did: 方案前缀
+├── example: DID方法名（指定操作DID的区块链/网络）
+└── 123456789abcdefghi: 唯一标识符（由DID方法生成）
+\end{lstlisting}
+
+\subsubsection{DID的生成}
+
+用户通过加密算法生成DID和密钥对，DID本身不包含任何个人身份信息（隐私设计）。
+
+\begin{lstlisting}
+DID密钥生成流程：
+1. 生成ECDSA secp256k1密钥对（或SM2）
+   私钥: 0x7c9e6a5d...
+   公钥: 0x04a8e7b6...
+2. 计算公钥Hash: SHA256(公钥) -> RIPEMD160 -> Base58
+3. 加上方法前缀: did:ethr:0x1234...
+4. DID文档存储在以太坊或IPFS上
+\end{lstlisting}
+
+\subsubsection{DID文档（DID Document）}
+
+DID文档描述了与DID关联的公钥、服务端点等信息，存储在区块链或去中心化存储上。
+
+\begin{lstlisting}
+DID Document示例：
+{
+  "@context": "https://www.w3.org/ns/did/v1",
+  "id": "did:ethr:0x1234abcd...",
+  "verificationMethod": [{
+    "id": "did:ethr:0x1234#keys-1",
+    "type": "EcdsaSecp256k1",
+    "controller": "did:ethr:0x1234...",
+    "publicKeyHex": "02a8e7b6..."
+  }],
+  "authentication": ["did:ethr:0x1234...#keys-1"],
+  "service": [{
+    "type": "LinkedDomains",
+    "serviceEndpoint": "https://..."
+  }]
+}
+\end{lstlisting}
+
+DID文档可以更新的操作（更改公钥、服务端点），但DID标识符本身保持不变。
+
+\subsection{可验证凭证（VC）}
+
+VC（Verifiable Credential，可验证凭证）是由权威机构签发的、关于某个主体的数字化声明。
+
+\begin{lstlisting}
+VC示例：学历证书
+{
+  "@context": ["https://www.w3.org/2018/credentials/v1"],
+  "type": ["VerifiableCredential", "UniversityDegreeCredential"],
+  "issuer": "did:ethr:0xuniversity...",
+  "issuanceDate": "2024-06-01",
+  "credentialSubject": {
+    "id": "did:ethr:0xstudent...",
+    "degree": {
+      "type": "BachelorDegree",
+      "name": "计算机科学",
+      "university": "某某大学"
+    }
+  },
+  "proof": {
+    "type": "EcdsaSecp256k1Signature2019",
+    "created": "2024-06-01",
+    "proofValue": "..."
+  }
+}
+\end{lstlisting}
+
+\begin{theorybox}
+\textbf{VC的核心特点：}
+\begin{enumerate}
+\item \textbf{可验证}：任何人都可以验证签发者身份和签名
+\item \textbf{防篡改}：任何修改都会导致签名失效
+\item \textbf{隐私保护}：可以选择性披露（只证明"我有本科学历"，不透露具体学校）
+\item \textbf{自主控制}：用户自己存储和管理凭证，不需要中心数据库
+\end{enumerate}
+\end{theorybox}
+
+\begin{keypointbox}
+重点：DID = 去中心化标识符，由用户自己控制，不依赖中心化机构。三个核心组件：DID标识符、DID文档（存公钥）、可验证凭证（VC）。DID文档存储在区块链或IPFS上。
+\end{keypointbox}
+
+% =================== 第12章 实操技能备考要点 ===================
+\section{实操技能备考要点}
+
+\subsection{实操技能要点}
+
+本章节主要涵盖实操技能相关知识点：
+
+\begin{enumerate}[leftmargin=1.5em]
+    \item 数据结构的基本原理及其在区块链中的应用
+    \item 主流密码学算法在区块链身份标识方面的应用
+\end{enumerate}
+
+\subsection{Python编程要点}
+
+\subsubsection{Hash计算}
+
+\begin{lstlisting}
+import hashlib
+
+# SHA-256计算
+def sha256_hash(data):
+    if isinstance(data, str):
+        data = data.encode('utf-8')
+    return hashlib.sha256(data).hexdigest()
+
+# 使用示例
+result = sha256_hash("Hello Blockchain")
+print(f"SHA-256: {result}")
+# 输出: SHA-256: 7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069
+\end{lstlisting}
+
+\subsubsection{Merkle Root计算}
+
+\begin{lstlisting}
+import hashlib
+
+def sha256(data):
+    if isinstance(data, str):
+        data = data.encode('utf-8')
+    return hashlib.sha256(data).hexdigest()
+
+def merkle_root(txs):
+    """计算Merkle Root"""
+    if not txs:
+        return sha256("")
+    
+    # 计算所有交易的Hash
+    hashes = [sha256(tx) for tx in txs]
+    
+    # 逐层计算，直到只剩一个Hash
+    while len(hashes) > 1:
+        # 如果奇数个，复制最后一个
+        if len(hashes) % 2 == 1:
+            hashes.append(hashes[-1])
+        
+        # 两两配对计算父Hash
+        parent_hashes = []
+        for i in range(0, len(hashes), 2):
+            parent = sha256(hashes[i] + hashes[i+1])
+            parent_hashes.append(parent)
+        
+        hashes = parent_hashes
+    
+    return hashes[0]
+
+# 测试
+txs = ["tx1", "tx2", "tx3", "tx4"]
+print(f"Merkle Root: {merkle_root(txs)}")
+\end{lstlisting}
+
+\subsubsection{简单区块链实现}
+
+\begin{lstlisting}
+import hashlib
+import time
+
+class Block:
+    def __init__(self, index, data, previous_hash):
+        self.index = index
+        self.timestamp = time.time()
+        self.data = data
+        self.previous_hash = previous_hash
+        self.nonce = 0
+        self.hash = self.mine_block()
+    
+    def calculate_hash(self):
+        value = str(self.index) + str(self.timestamp) + \
+                str(self.data) + str(self.previous_hash) + \
+                str(self.nonce)
+        return hashlib.sha256(value.encode()).hexdigest()
+    
+    def mine_block(self, difficulty=4):
+        """PoW挖矿"""
+        target = "0" * difficulty
+        while True:
+            self.hash = self.calculate_hash()
+            if self.hash.startswith(target):
+                return self.hash
+            self.nonce += 1
+
+class Blockchain:
+    def __init__(self):
+        self.chain = [self.create_genesis_block()]
+    
+    def create_genesis_block(self):
+        return Block(0, "Genesis Block", "0")
+    
+    def get_latest_block(self):
+        return self.chain[-1]
+    
+    def add_block(self, data):
+        previous_hash = self.get_latest_block().hash
+        new_block = Block(len(self.chain), data, previous_hash)
+        self.chain.append(new_block)
+    
+    def is_valid(self):
+        for i in range(1, len(self.chain)):
+            current = self.chain[i]
+            previous = self.chain[i-1]
+            
+            if current.hash != current.calculate_hash():
+                return False
+            if current.previous_hash != previous.hash:
+                return False
+        return True
+
+# 使用示例
+blockchain = Blockchain()
+blockchain.add_block("First Transaction")
+blockchain.add_block("Second Transaction")
+
+print(f"区块链有效: {blockchain.is_valid()}")
+for block in blockchain.chain:
+    print(f"区块{block.index}: {block.hash[:20]}...")
+\end{lstlisting}
+
+\subsection{备考建议}
+
+\begin{enumerate}[leftmargin=1.5em]
+\item \textbf{理解原理}：不要死记硬背，理解每个算法的原理和应用场景
+\item \textbf{动手实践}：至少实现一遍SHA-256、Merkle Tree、简单区块链
+\item \textbf{熟悉Python}：掌握基本语法、hashlib库的使用
+\item \textbf{编码规范}：代码缩进、命名、注释
+\item \textbf{时间分配}：理论45分钟，实操60分钟，合理分配时间
+\end{enumerate}
+
+% =================== 附录 ===================
+\section{附录A：核心术语速查表}
+
+\begin{center}
+\begin{tabular}{|p{3cm}|p{10cm}|}
+\hline
+\rowcolor{LightBG}
+\textbf{术语} & \textbf{解释} \\
+\hline
+区块链 & 分布式账本技术，数据不可篡改 \\
+\hline
+Hash & 单向函数，任意输入产生固定长度输出 \\
+\hline
+SHA-256 & 安全Hash算法，输出256位 \\
+\hline
+Merkle Tree & 二叉树结构，用于快速验证数据完整性 \\
+\hline
+UTXO & 未花费交易输出，比特币的记账模型 \\
+\hline
+PoW & 工作量证明，通过算力竞争记账权 \\
+\hline
+PoS & 权益证明，通过持币量和时间选择验证者 \\
+\hline
+PBFT & 实用拜占庭容错，联盟链常用共识 \\
+\hline
+智能合约 & 运行在区块链上的自动执行程序 \\
+\hline
+DID & 去中心化身份标识符 \\
+\hline
+VC & 可验证凭证 \\
+\hline
+SM2/SM3/SM4 & 中国国密算法 \\
+\hline
+Gas & 以太坊执行操作的费用单位 \\
+\hline
+\end{tabular}
+\end{center}
+
+\section{附录B：知识体系思维导图}
+
+\begin{theorybox}
+\textbf{重点速查（按模块整理）}
+
+\textbf{【必须记忆】}
+\begin{itemize}
+\item Hash特性：单向、雪崩、抗碰撞
+\item SHA-256输出：64个十六进制字符 = 256位
+\item ECC vs RSA：256位ECC $\approx$ 3072位RSA
+\item 私钥签名、公钥验证
+\item 区块头6个字段：Version、PrevHash、Merkle Root、Timestamp、Bits、Nonce
+\item UTXO模型：输入引用过去的输出，产生新的输出
+\item PoW：算力竞争，找到Nonce使Hash $<$ 目标值
+\item PoS：质押代币，随机选择验证者
+\item PBFT：三阶段投票，容忍 $<$ 1/3恶意节点
+\item 联盟链 vs 公链：PBFT/Raft vs PoW/PoS
+\item SM2/SM3/SM4：国密非对称加密、Hash、对称加密
+\item DID三要素：标识符、文档、可验证凭证
+\end{itemize}
+
+\textbf{【理解即可】}
+\begin{itemize}
+\item 拜占庭将军问题：叛徒不超过1/3时忠诚将军可达成一致
+\item PoS根据持币量和时间选择记账者，不消耗算力
+\item Merkle Tree：根Hash代表所有交易，任意一笔修改导致根变化
+\item 联盟链用PBFT/Raft，公链用PoW/PoS
+\item DID三要素：DID标识符 + DID文档 + 可验证凭证（VC）
+\end{itemize}
+
+\textbf{【实操相关】}
+\begin{itemize}
+\item SHA-256计算：\texttt{hashlib.sha256(data).hexdigest()}
+\item 区块链结构：区块头（Hash指针链接）+ 区块体（交易列表）
+\item Merkle Root计算：逐层两两Hash，直到只剩一个根Hash
+\end{itemize}
+\end{theorybox}
+
+\section{附录C：推荐学习资源}
+
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{比特币白皮书}：《Bitcoin: A Peer-to-Peer Electronic Cash System》（中本聪）
+\item \textbf{以太坊白皮书}：《A Next-Generation Smart Contract and Decentralized Application Platform》（Vitalik Buterin）
+\item \textbf{国密标准}：GM/T 0003-2012（SM2）、GM/T 0004-2012（SM3）、GM/T 0002-2012（SM4）
+\item \textbf{在线工具}：\texttt{blockchain.com/explorer}（比特币浏览器）、\texttt{etherscan.io}（以太坊浏览器）
+\item \textbf{Python库}：\texttt{hashlib}（标准库）、\texttt{gmssl}（国密算法）
+\end{itemize}
+
+\section{附录D：实操环境搭建指南}
+
+\subsection{Python环境准备}
+
+\begin{enumerate}[leftmargin=1.5em]
+\item \textbf{安装Python 3.8+}：从官网下载安装 \texttt{python.org}
+\item \textbf{安装必要库}：
+\begin{lstlisting}
+pip install hashlib gmssl pycryptodome
+\end{lstlisting}
+\item \textbf{验证安装}：
+\begin{lstlisting}
+import hashlib
+print(hashlib.sha256(b"test").hexdigest())
+\end{lstlisting}
+\end{enumerate}
+
+\subsection{区块链浏览器使用}
+
+\begin{enumerate}[leftmargin=1.5em]
+\item \textbf{比特币浏览器}：\texttt{blockchain.com/explorer}
+  \begin{itemize}
+  \item 输入交易ID查询交易详情
+  \item 查看区块高度、时间戳、交易数量
+  \end{itemize}
+\item \textbf{以太坊浏览器}：\texttt{etherscan.io}
+  \begin{itemize}
+  \item 查询账户余额和交易历史
+  \item 查看智能合约代码
+  \end{itemize}
+\end{enumerate}
+
+\section{附录E：模拟试题}
+
+\subsection{理论知识题}
+
+\textbf{一、选择题（每题5分）}
+
+\begin{enumerate}[leftmargin=1.5em]
+\item SHA-256算法的输出长度是（ ）
+  \begin{itemize}
+  \item[A] 128位
+  \item[B] 256位
+  \item[C] 512位
+  \item[D] 1024位
+  \end{itemize}
+
+\item 比特币使用的共识算法是（ ）
+  \begin{itemize}
+  \item[A] PoS
+  \item[B] PBFT
+  \item[C] PoW
+  \item[D] Raft
+  \end{itemize}
+
+\item PBFT算法能容忍的恶意节点比例最多为（ ）
+  \begin{itemize}
+  \item[A] 1/2
+  \item[B] 1/3
+  \item[C] 2/3
+  \item[D] 1/4
+  \end{itemize}
+
+\item 以下哪个是中国国密非对称加密算法（ ）
+  \begin{itemize}
+  \item[A] RSA
+  \item[B] ECDSA
+  \item[C] SM2
+  \item[D] AES
+  \end{itemize}
+\end{enumerate}
+
+\textbf{二、简答题（每题10分）}
+
+\begin{enumerate}[leftmargin=1.5em]
+\item 简述区块链的不可篡改性是如何通过密码学实现的。
+
+\item 解释UTXO模型与账户余额模型的区别。
+
+\item 说明Merkle Tree在区块链中的作用。
+\end{enumerate}
+
+\subsection{实操技能题}
+
+\textbf{三、编程题（每题20分）}
+
+\begin{enumerate}[leftmargin=1.5em]
+\item 编写Python函数计算给定字符串的SHA-256哈希值，并验证雪崩效应。
+
+\textbf{参考答案：}
+\begin{lstlisting}
+import hashlib
+
+def sha256_hash(data):
+    if isinstance(data, str):
+        data = data.encode('utf-8')
+    return hashlib.sha256(data).hexdigest()
+
+# 验证雪崩效应
+h1 = sha256_hash("blockchain")
+h2 = sha256_hash("blockchaiN")
+print(f"原始: {h1}")
+print(f"修改: {h2}")
+print(f"不同位数: {sum(c1 != c2 for c1, c2 in zip(h1, h2))}")
+\end{lstlisting}
+
+\item 实现简单的Merkle Root计算函数。
+
+\textbf{参考答案：}
+\begin{lstlisting}
+import hashlib
+
+def sha256(data):
+    if isinstance(data, str):
+        data = data.encode('utf-8')
+    return hashlib.sha256(data).hexdigest()
+
+def merkle_root(txs):
+    hashes = [sha256(tx) for tx in txs]
+    while len(hashes) > 1:
+        if len(hashes) % 2 == 1:
+            hashes.append(hashes[-1])
+        parent_hashes = []
+        for i in range(0, len(hashes), 2):
+            parent = sha256(hashes[i] + hashes[i+1])
+            parent_hashes.append(parent)
+        hashes = parent_hashes
+    return hashes[0]
+
+# 测试
+txs = ["tx1", "tx2", "tx3", "tx4"]
+print(f"Merkle Root: {merkle_root(txs)}")
+\end{lstlisting}
+\end{enumerate}
+
+\subsection{答案速查}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{题号} & \textbf{答案} & \textbf{题号} & \textbf{答案} \\
+\hline
+1 & B & 3 & B \\
+2 & C & 4 & C \\
+\hline
+\end{tabular}
+\end{center}
+
+\end{document}
