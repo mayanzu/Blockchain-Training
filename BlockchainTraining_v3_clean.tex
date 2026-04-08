@@ -38,6 +38,7 @@
 \definecolor{TheoryBG}{HTML}{F0F7FF}
 \definecolor{ConfidentialRed}{HTML}{C41E3A}
 \definecolor{InternalGray}{HTML}{4A4A4A}
+\definecolor{ExampleGreen}{HTML}{27AE60}
 
 % tcolorbox设置
 \tcbuselibrary{skins,breakable}
@@ -72,6 +73,16 @@
   left=8pt,right=8pt,top=8pt,bottom=8pt,
   before upper={\setlength{\parindent}{0pt}},
   after upper={\setlength{\parindent}{0pt}\normalfont}
+}
+
+\newtcolorbox{examplebox}[1][]{
+  colback=ExampleGreen!5,
+  colframe=ExampleGreen,
+  boxrule=0.5pt,
+  arc=4pt,
+  fonttitle=\bfseries\color{ExampleGreen},
+  title=#1,
+  left=8pt,right=8pt,top=8pt,bottom=8pt
 }
 
 % 代码样式
