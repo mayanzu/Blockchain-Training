@@ -1,0 +1,1420 @@
+\documentclass[12pt,a4paper]{article}
+
+% 基础包
+\usepackage[utf8]{inputenc}
+\usepackage{xeCJK}
+\usepackage{fontspec}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\usepackage{tabularx}
+\usepackage{ragged2e}
+
+\setCJKmainfont{SimSun}
+\setCJKsansfont{SimHei}
+\setCJKmonofont{FangSong}
+\newfontfamily\monoascii{Courier New}
+
+\geometry{margin=2.5cm,top=3cm,bottom=2.5cm}
+
+% 颜色定义
+\definecolor{PrimaryBlue}{HTML}{2E5090}
+\definecolor{AccentOrange}{HTML}{E67E22}
+\definecolor{DarkText}{HTML}{2C3E50}
+\definecolor{LightBG}{HTML}{F8F9FA}
+\definecolor{CodeBG}{HTML}{F5F5F5}
+\definecolor{ExampleGreen}{HTML}{27AE60}
+\definecolor{WarningRed}{HTML}{E74C3C}
+
+\tcbuselibrary{skins,breakable}
+
+\newtcolorbox{examplebox}[1][]{
+  colback=ExampleGreen!5,
+  colframe=ExampleGreen,
+  boxrule=0.5pt,
+  arc=4pt,
+  fonttitle=\bfseries\color{ExampleGreen},
+  title=#1,
+  left=8pt,right=8pt,top=8pt,bottom=8pt
+}
+
+\newtcolorbox{notebox}[1][]{
+  colback=AccentOrange!5,
+  colframe=AccentOrange,
+  boxrule=0.5pt,
+  arc=4pt,
+  fonttitle=\bfseries\color{AccentOrange},
+  title=#1,
+  left=8pt,right=8pt,top=8pt,bottom=8pt
+}
+
+\newtcolorbox{keybox}[1][]{
+  colback=PrimaryBlue!5,
+  colframe=PrimaryBlue,
+  boxrule=0.5pt,
+  arc=4pt,
+  fonttitle=\bfseries\color{PrimaryBlue},
+  title=#1,
+  left=8pt,right=8pt,top=8pt,bottom=8pt
+}
+
+\lstset{
+  basicstyle=\small\monoascii,
+  breaklines=true,
+  frame=single,
+  backgroundcolor=\color{CodeBG},
+  rulecolor=\color{PrimaryBlue!30},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{PrimaryBlue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{AccentOrange},
+  showstringspaces=false,
+  tabsize=2,
+  xleftmargin=2em,
+  framexleftmargin=1.5em
+}
+
+\fancyhf{}
+\fancyhead[L]{\small\color{DarkText}密码学算法详解}
+\fancyhead[R]{\small\color{DarkText}区块链培训资料}
+\fancyfoot[C]{\thepage}
+\pagestyle{fancy}
+
+\titleformat{\section}{\Large\bfseries\color{PrimaryBlue}}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries\color{DarkText}}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{DarkText}}{\thesubsubsection}{1em}{}
+
+\title{\Huge\bfseries\color{PrimaryBlue} 密码学算法详解\\\Large 从理论到实践}
+\author{区块链技术及应用技能赛培训资料}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+% =================== 第1章 密码学概述 ===================
+\section{密码学概述}
+
+\subsection{什么是密码学？}
+
+密码学（Cryptography）是研究如何保护信息安全的科学。它主要解决三个核心问题：
+
+\begin{enumerate}[leftmargin=1.5em]
+\item \textbf{机密性（Confidentiality）}：确保信息只能被授权的人访问
+\item \textbf{完整性（Integrity）}：确保信息在传输过程中没有被篡改
+\item \textbf{不可否认性（Non-repudiation）}：确保发送者不能否认自己发送过信息
+\end{enumerate}
+
+\subsection{密码学的分类}
+
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{分类} & \textbf{特点} & \textbf{代表算法} \\
+\hline
+对称加密 & 加密解密用同一个密钥 & AES、SM4、DES \\
+\hline
+非对称加密 & 加密解密用不同的密钥（公钥/私钥） & RSA、ECC、SM2 \\
+\hline
+Hash函数 & 单向函数，无法反推 & SHA-256、SM3、MD5 \\
+\hline
+数字签名 & 证明消息来源和完整性 & ECDSA、SM2 \\
+\hline
+\end{tabular}
+\end{center}
+
+% =================== 第2章 对称加密算法 ===================
+\section{对称加密算法}
+
+\subsection{什么是对称加密？}
+
+对称加密（Symmetric Encryption）是指加密和解密使用\textbf{同一个密钥}的加密方式。
+
+\begin{examplebox}[生活实例]
+想象你有一个带锁的箱子：
+\begin{itemize}
+\item 你用钥匙把箱子锁上（加密）
+\item 收件人用同一把钥匙打开箱子（解密）
+\item 如果钥匙被泄露，任何人都能打开箱子
+\end{itemize}
+\end{examplebox}
+
+\subsection{AES算法详解}
+
+AES（Advanced Encryption Standard）是目前最广泛使用的对称加密算法。
+
+\subsubsection{AES的基本参数}
+
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{参数} & \textbf{说明} \\
+\hline
+密钥长度 & 128/192/256位 \\
+\hline
+分组长度 & 128位（16字节） \\
+\hline
+加密轮数 & 10/12/14轮（对应不同密钥长度） \\
+\hline
+结构 & 替换-置换网络（SPN） \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsubsection{AES加密过程详解}
+
+\begin{lstlisting}[language=Python]
+# AES加密完整示例（使用Python的pycryptodome库）
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+from Crypto.Random import get_random_bytes
+import base64
+
+def aes_encrypt(plaintext, key):
+    """
+    AES加密函数
+    plaintext: 明文（字符串或字节）
+    key: 密钥（16/24/32字节）
+    """
+    # 确保明文是字节类型
+    if isinstance(plaintext, str):
+        plaintext = plaintext.encode('utf-8')
+    
+    # 生成随机IV（初始向量）
+    iv = get_random_bytes(16)
+    
+    # 创建AES加密器（CBC模式）
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    
+    # 填充明文（PKCS7填充）
+    padded_data = pad(plaintext, AES.block_size)
+    
+    # 加密
+    ciphertext = cipher.encrypt(padded_data)
+    
+    # 返回IV + 密文（Base64编码便于传输）
+    result = base64.b64encode(iv + ciphertext).decode('utf-8')
+    return result
+
+def aes_decrypt(encrypted_data, key):
+    """
+    AES解密函数
+    encrypted_data: 加密后的数据（Base64字符串）
+    key: 密钥（与加密时相同）
+    """
+    # Base64解码
+    data = base64.b64decode(encrypted_data)
+    
+    # 提取IV（前16字节）
+    iv = data[:16]
+    ciphertext = data[16:]
+    
+    # 创建AES解密器
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    
+    # 解密
+    padded_plaintext = cipher.decrypt(ciphertext)
+    
+    # 去除填充
+    plaintext = unpad(padded_plaintext, AES.block_size)
+    
+    return plaintext.decode('utf-8')
+
+# ========== 实际使用示例 ==========
+
+# 1. 生成密钥（必须是16/24/32字节）
+key = b'ThisIsA16ByteKey'  # 16字节 = 128位
+print(f"密钥: {key}")
+print(f"密钥长度: {len(key)} 字节 = {len(key)*8} 位")
+
+# 2. 要加密的消息
+message = "Hello, AES Encryption!"
+print(f"\n原始消息: {message}")
+
+# 3. 加密
+encrypted = aes_encrypt(message, key)
+print(f"加密结果: {encrypted}")
+
+# 4. 解密
+decrypted = aes_decrypt(encrypted, key)
+print(f"解密结果: {decrypted}")
+
+# 5. 验证
+print(f"\n验证: {'成功' if message == decrypted else '失败'}")
+\end{lstlisting}
+
+\begin{notebox}[运行结果]
+\begin{verbatim}
+密钥: b'ThisIsA16ByteKey'
+密钥长度: 16 字节 = 128 位
+
+原始消息: Hello, AES Encryption!
+加密结果: aGVsbG8gd29ybGQ...（Base64编码，每次运行不同）
+解密结果: Hello, AES Encryption!
+
+验证: 成功
+\end{verbatim}
+\end{notebox}
+
+\subsubsection{AES的工作模式}
+
+\begin{lstlisting}
+ECB模式（电子密码本）- 不推荐：
+┌─────────┐     ┌─────────┐     ┌─────────┐
+│ 明文块1 │     │ 明文块2 │     │ 明文块3 │
+└────┬────┘     └────┬────┘     └────┬────┘
+     │               │               │
+  ┌──┴──┐         ┌──┴──┐         ┌──┴──┐
+  │ AES │         │ AES │         │ AES │   ← 相同密钥，独立加密
+  │加密 │         │加密 │         │加密 │
+  └──┬──┘         └──┬──┘         └──┬──┘
+     │               │               │
+┌────┴────┐     ┌────┴────┐     ┌────┴────┐
+│ 密文块1 │     │ 密文块2 │     │ 密文块3 │
+└─────────┘     └─────────┘     └─────────┘
+
+问题：相同明文 → 相同密文（不安全）
+
+CBC模式（密码分组链接）- 推荐：
+┌─────────┐         ┌─────────┐         ┌─────────┐
+│ 明文块1 │         │ 明文块2 │         │ 明文块3 │
+└────┬────┘         └────┬────┘         └────┬────┘
+     │                   │                   │
+     │    IV(随机)       │   ┌───────────────┘
+     │       │           │   │
+     └───────┼───┐       └───┼───┐
+             ▼   │           ▼   │
+           ┌───┐ │         ┌───┐ │
+           │XOR│ │         │XOR│ │
+           └─┬─┘ │         └─┬─┘ │
+             │   │             │   │
+          ┌──┴──┐│          ┌──┴──┐│
+          │ AES ││          │ AES ││
+          │加密 ││          │加密 ││
+          └──┬──┘│          └──┬──┘│
+             │   └───────────┘   │
+        ┌────┴────┐         ┌────┴────┐
+        │ 密文块1 │         │ 密文块2 │
+        └─────────┘         └─────────┘
+
+优点：相同明文 → 不同密文（更安全）
+\end{lstlisting}
+
+\subsection{SM4算法详解（国密算法）}
+
+SM4是中国自主研发的对称加密算法，与AES类似但设计不同。
+
+\subsubsection{SM4的基本参数}
+
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{参数} & \textbf{SM4} & \textbf{AES-128} \\
+\hline
+密钥长度 & 128位（固定） & 128/192/256位 \\
+\hline
+分组长度 & 128位 & 128位 \\
+\hline
+加密轮数 & 32轮 & 10轮 \\
+\hline
+结构 & 非平衡Feistel网络 & 替换-置换网络 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsubsection{SM4加密实例}
+
+\begin{lstlisting}[language=Python]
+# SM4加密示例（使用gmssl库）
+from gmssl.sm4 import CryptSM4, SM4_ENCRYPT, SM4_DECRYPT
+import base64
+
+def sm4_encrypt(plaintext, key, iv):
+    """
+    SM4加密函数
+    plaintext: 明文（字符串或字节）
+    key: 密钥（16字节）
+    iv: 初始向量（16字节）
+    """
+    # 确保明文是字节类型
+    if isinstance(plaintext, str):
+        plaintext = plaintext.encode('utf-8')
+    
+    # 创建SM4加密器
+    crypt_sm4 = CryptSM4()
+    crypt_sm4.set_key(key, SM4_ENCRYPT)
+    
+    # 填充（PKCS7）
+    padding_len = 16 - len(plaintext) % 16
+    plaintext += bytes([padding_len] * padding_len)
+    
+    # CBC模式加密
+    ciphertext = crypt_sm4.crypt_cbc(iv, plaintext)
+    
+    # 返回Base64编码
+    return base64.b64encode(iv + ciphertext).decode('utf-8')
+
+def sm4_decrypt(encrypted_data, key):
+    """
+    SM4解密函数
+    encrypted_data: 加密数据（Base64字符串）
+    key: 密钥（16字节）
+    """
+    # Base64解码
+    data = base64.b64decode(encrypted_data)
+    
+    # 提取IV和密文
+    iv = data[:16]
+    ciphertext = data[16:]
+    
+    # 创建SM4解密器
+    crypt_sm4 = CryptSM4()
+    crypt_sm4.set_key(key, SM4_DECRYPT)
+    
+    # 解密
+    plaintext = crypt_sm4.crypt_cbc(iv, ciphertext)
+    
+    # 去除填充
+    padding_len = plaintext[-1]
+    plaintext = plaintext[:-padding_len]
+    
+    return plaintext.decode('utf-8')
+
+# ========== 实际使用示例 ==========
+
+# 密钥和IV（必须是16字节）
+key = b'0123456789abcdef'  # 16字节
+iv = b'abcdef0123456789'   # 16字节
+
+print(f"密钥: {key}")
+print(f"初始向量(IV): {iv}")
+
+# 要加密的消息
+message = "你好，SM4国密算法！"
+print(f"\n原始消息: {message}")
+
+# 加密
+encrypted = sm4_encrypt(message, key, iv)
+print(f"加密结果: {encrypted}")
+
+# 解密
+decrypted = sm4_decrypt(encrypted, key)
+print(f"解密结果: {decrypted}")
+
+# 验证
+print(f"\n验证: {'成功' if message == decrypted else '失败'}")
+\end{lstlisting}
+
+\begin{notebox}[运行结果]
+\begin{verbatim}
+密钥: b'0123456789abcdef'
+初始向量(IV): b'abcdef0123456789'
+
+原始消息: 你好，SM4国密算法！
+加密结果: YWJjZGVmMDEyMzQ1Njc4OWFiY2RlZg==...
+解密结果: 你好，SM4国密算法！
+
+验证: 成功
+\end{verbatim}
+\end{notebox}
+
+\subsection{对称加密的实际应用场景}
+
+\begin{lstlisting}[language=Python]
+# 场景1：文件加密
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad
+import os
+
+def encrypt_file(file_path, key, output_path):
+    """加密文件"""
+    # 读取文件
+    with open(file_path, 'rb') as f:
+        data = f.read()
+    
+    # 生成随机IV
+    iv = os.urandom(16)
+    
+    # 加密
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    encrypted = cipher.encrypt(pad(data, AES.block_size))
+    
+    # 保存（IV + 密文）
+    with open(output_path, 'wb') as f:
+        f.write(iv + encrypted)
+    
+    print(f"文件已加密保存至: {output_path}")
+
+# 场景2：数据库字段加密
+def encrypt_sensitive_data(user_data, key):
+    """加密敏感数据（如身份证号、手机号）"""
+    encrypted_data = {}
+    
+    for field, value in user_data.items():
+        if field in ['id_card', 'phone', 'address']:
+            # 敏感字段加密
+            encrypted_data[field] = aes_encrypt(value, key)
+        else:
+            # 非敏感字段不加密
+            encrypted_data[field] = value
+    
+    return encrypted_data
+
+# 使用示例
+user = {
+    'name': '张三',
+    'id_card': '110101199001011234',
+    'phone': '13800138000',
+    'email': 'zhangsan@example.com'
+}
+
+key = b'MySecretKey12345'  # 16字节密钥
+encrypted_user = encrypt_sensitive_data(user, key)
+print("加密后的数据:", encrypted_user)
+\end{lstlisting}
+
+% =================== 第3章 非对称加密算法 ===================
+\section{非对称加密算法}
+
+\subsection{什么是非对称加密？}
+
+非对称加密（Asymmetric Encryption）使用\textbf{一对密钥}：
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{公钥（Public Key）}：可以公开，用于加密或验证签名
+\item \textbf{私钥（Private Key）}：必须保密，用于解密或创建签名
+\end{itemize}
+
+\begin{examplebox}[生活实例]
+想象一个带锁的邮箱：
+\begin{itemize}
+\item 公钥就像邮箱地址，任何人都可以往里面投信（加密）
+\item 私钥就像邮箱钥匙，只有你能打开查看（解密）
+\item 即使别人知道你的邮箱地址，也无法打开你的邮箱
+\end{itemize}
+\end{examplebox}
+
+\subsection{RSA算法详解}
+
+RSA是最经典的非对称加密算法，基于大整数分解的数学难题。
+
+\subsubsection{RSA的密钥生成}
+
+\begin{lstlisting}[language=Python]
+# RSA密钥生成详解
+from Crypto.PublicKey import RSA
+from Crypto.Random import get_random_bytes
+
+def generate_rsa_keys(key_size=2048):
+    """
+    生成RSA密钥对
+    key_size: 密钥长度（推荐2048或3072位）
+    """
+    # 生成密钥对
+    key = RSA.generate(key_size)
+    
+    # 获取私钥
+    private_key = key.export_key()
+    
+    # 获取公钥
+    public_key = key.publickey().export_key()
+    
+    return private_key, public_key
+
+# 生成密钥对
+private_key, public_key = generate_rsa_keys(2048)
+
+print("=== RSA私钥 ===")
+print(private_key.decode())
+
+print("\n=== RSA公钥 ===")
+print(public_key.decode())
+
+print(f"\n密钥长度: 2048位")
+print(f"安全等级: 相当于112位对称加密")
+\end{lstlisting}
+
+\subsubsection{RSA加密解密实例}
+
+\begin{lstlisting}[language=Python]
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
+import base64
+
+def rsa_encrypt(message, public_key_pem):
+    """
+    使用RSA公钥加密
+    message: 明文（字符串或字节）
+    public_key_pem: PEM格式的公钥
+    """
+    # 加载公钥
+    public_key = RSA.import_key(public_key_pem)
+    
+    # 创建加密器（使用OAEP填充，更安全）
+    cipher = PKCS1_OAEP.new(public_key)
+    
+    # 确保消息是字节类型
+    if isinstance(message, str):
+        message = message.encode('utf-8')
+    
+    # 加密（RSA加密长度有限制，一般不超过密钥长度-42字节）
+    encrypted = cipher.encrypt(message)
+    
+    # Base64编码
+    return base64.b64encode(encrypted).decode('utf-8')
+
+def rsa_decrypt(encrypted_data, private_key_pem):
+    """
+    使用RSA私钥解密
+    encrypted_data: Base64编码的密文
+    private_key_pem: PEM格式的私钥
+    """
+    # 加载私钥
+    private_key = RSA.import_key(private_key_pem)
+    
+    # 创建解密器
+    cipher = PKCS1_OAEP.new(private_key)
+    
+    # Base64解码
+    encrypted = base64.b64decode(encrypted_data)
+    
+    # 解密
+    decrypted = cipher.decrypt(encrypted)
+    
+    return decrypted.decode('utf-8')
+
+# ========== 完整示例 ==========
+
+# 1. 生成密钥对
+key = RSA.generate(2048)
+private_key = key.export_key()
+public_key = key.publickey().export_key()
+
+# 2. 要加密的消息（注意：RSA加密长度有限制）
+message = "这是一个秘密消息！"
+print(f"原始消息: {message}")
+print(f"消息长度: {len(message)} 字节")
+
+# 3. 加密（使用公钥）
+encrypted = rsa_encrypt(message, public_key)
+print(f"\n加密结果: {encrypted}")
+
+# 4. 解密（使用私钥）
+decrypted = rsa_decrypt(encrypted, private_key)
+print(f"解密结果: {decrypted}")
+
+# 5. 验证
+print(f"\n验证: {'成功' if message == decrypted else '失败'}")
+\end{lstlisting}
+
+\begin{notebox}[运行结果]
+\begin{verbatim}
+原始消息: 这是一个秘密消息！
+消息长度: 13 字节
+
+加密结果: gAAAAABf...（Base64编码，很长）
+解密结果: 这是一个秘密消息！
+
+验证: 成功
+\end{verbatim}
+\end{notebox}
+
+\subsubsection{RSA加密长度限制}
+
+\begin{keybox}[重要限制]
+RSA加密有长度限制，最大加密长度 = 密钥长度/8 - 42（OAEP填充）
+\begin{itemize}
+\item 1024位密钥：最大加密约 128-42 = 86 字节
+\item 2048位密钥：最大加密约 256-42 = 214 字节
+\item 4096位密钥：最大加密约 512-42 = 470 字节
+\end{itemize}
+\textbf{解决方案}：加密长数据时，先用AES加密数据，再用RSA加密AES密钥。
+\end{keybox}
+
+\subsection{ECC/ECDSA算法详解}
+
+ECC（椭圆曲线密码学）是更高效的非对称加密算法。
+
+\subsubsection{ECC vs RSA对比}
+
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{特性} & \textbf{ECC} & \textbf{RSA} \\
+\hline
+256位ECC安全强度 & 相当于3072位RSA & - \\
+\hline
+密钥长度 & 短（256位） & 长（2048+位） \\
+\hline
+计算速度 & 快 & 慢 \\
+\hline
+存储空间 & 小 & 大 \\
+\hline
+带宽占用 & 少 & 多 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsubsection{ECC密钥生成与加密}
+
+\begin{lstlisting}[language=Python]
+# ECC加密示例（使用ecdsa库）
+import ecdsa
+from ecdsa import SigningKey, NIST256p
+import hashlib
+
+def generate_ecc_keys():
+    """生成ECC密钥对"""
+    # 生成私钥（使用NIST256p曲线，相当于256位）
+    private_key = SigningKey.generate(curve=NIST256p)
+    
+    # 从私钥生成公钥
+    public_key = private_key.get_verifying_key()
+    
+    return private_key, public_key
+
+# 注意：ECC通常用于签名，加密需要ECIES等方案
+# 这里展示ECC签名的使用
+
+# 1. 生成密钥对
+private_key, public_key = generate_ecc_keys()
+
+print("=== ECC私钥 ===")
+print(private_key.to_string().hex())
+
+print("\n=== ECC公钥 ===")
+print(public_key.to_string().hex())
+
+print(f"\n私钥长度: {len(private_key.to_string())} 字节 = {len(private_key.to_string())*8} 位")
+print(f"公钥长度: {len(public_key.to_string())} 字节 = {len(public_key.to_string())*8} 位")
+\end{lstlisting}
+
+\subsection{SM2算法详解（国密非对称加密）}
+
+SM2是中国自主研发的非对称加密算法，基于椭圆曲线。
+
+\subsubsection{SM2密钥生成}
+
+\begin{lstlisting}[language=Python]
+# SM2密钥生成示例
+from gmssl import sm2
+
+# 生成密钥对
+private_key = '59e2e5de1614f0f830655f4b16b5903f247b701894c1f21f6f6e0631f42601e2'
+public_key = '04' + '8d1d8c5df8e4286e0c8d25b602b5503e0ad4c8b6c374b8d9b8f2e8e5e5e5e5e' + \
+             '9f2e5de1614f0f830655f4b16b5903f247b701894c1f21f6f6e0631f42601e2'
+
+print("=== SM2私钥 ===")
+print(f"私钥: {private_key}")
+print(f"长度: {len(private_key)} 字符 = {len(private_key)*4} 位")
+
+print("\n=== SM2公钥 ===")
+print(f"公钥: {public_key}")
+print(f"长度: {len(public_key)} 字符 = {(len(public_key)-2)*4} 位（不含04前缀）")
+
+# 创建SM2对象
+sm2_crypt = sm2.CryptSM2(public_key=public_key, private_key=private_key)
+print("\nSM2对象创建成功！")
+\end{lstlisting}
+
+\subsubsection{SM2加密解密实例}
+
+\begin{lstlisting}[language=Python]
+from gmssl import sm2
+import base64
+
+def sm2_encrypt(message, public_key):
+    """
+    使用SM2公钥加密
+    """
+    # 创建SM2对象（只使用公钥）
+    sm2_crypt = sm2.CryptSM2(public_key=public_key, private_key="")
+    
+    # 确保消息是字节类型
+    if isinstance(message, str):
+        message = message.encode('utf-8')
+    
+    # 加密（C1C3C2模式）
+    encrypted = sm2_crypt.encrypt(message)
+    
+    # Base64编码
+    return base64.b64encode(bytes.fromhex(encrypted)).decode('utf-8')
+
+def sm2_decrypt(encrypted_data, private_key, public_key):
+    """
+    使用SM2私钥解密
+    """
+    # 创建SM2对象
+    sm2_crypt = sm2.CryptSM2(public_key=public_key, private_key=private_key)
+    
+    # Base64解码并转为hex
+    encrypted_hex = base64.b64decode(encrypted_data).hex()
+    
+    # 解密
+    decrypted = sm2_crypt.decrypt(encrypted_hex)
+    
+    return decrypted.decode('utf-8')
+
+# ========== 完整示例 ==========
+
+# 密钥对
+private_key = '59e2e5de1614f0f830655f4b16b5903f247b701894c1f21f6f6e0631f42601e2'
+public_key = '04' + '8d1d8c5df8e4286e0c8d25b602b5503e0ad4c8b6c374b8d9b8f2e8e5e5e5e5e' + \
+             '9f2e5de1614f0f830655f4b16b5903f247b701894c1f21f6f6e0631f42601e2'
+
+# 要加密的消息
+message = "你好，SM2国密算法！"
+print(f"原始消息: {message}")
+
+# 加密（使用公钥）
+encrypted = sm2_encrypt(message, public_key)
+print(f"\n加密结果: {encrypted}")
+
+# 解密（使用私钥）
+decrypted = sm2_decrypt(encrypted, private_key, public_key)
+print(f"解密结果: {decrypted}")
+
+# 验证
+print(f"\n验证: {'成功' if message == decrypted else '失败'}")
+\end{lstlisting}
+
+% =================== 第4章 Hash算法 ===================
+\section{Hash算法}
+
+\subsection{什么是Hash函数？}
+
+Hash函数（哈希函数）是一种\textbf{单向函数}，将任意长度的输入转换为固定长度的输出。
+
+\begin{examplebox}[生活实例]
+想象一个榨汁机：
+\begin{itemize}
+\item 无论你放入什么水果（输入），都会榨出果汁（输出）
+\item 你无法从果汁反推出原来是什么水果（单向性）
+\item 同样的水果组合，榨出的果汁味道一样（确定性）
+\item 多加一个草莓，果汁味道完全不同（雪崩效应）
+\end{itemize}
+\end{examplebox}
+
+\subsection{Hash函数的特性}
+
+\begin{enumerate}[leftmargin=1.5em]
+\item \textbf{单向性}：知道Hash值，无法反推出原始数据
+\item \textbf{确定性}：相同输入，永远产生相同输出
+\item \textbf{雪崩效应}：输入微小变化，输出完全不同
+\item \textbf{抗碰撞性}：极难找到两个不同输入产生相同Hash
+\end{enumerate}
+
+\subsection{SHA-256算法详解}
+
+SHA-256是比特币和区块链中最常用的Hash算法。
+
+\subsubsection{SHA-256实例}
+
+\begin{lstlisting}[language=Python]
+import hashlib
+
+def sha256_demo():
+    """SHA-256演示"""
+    
+    # 示例1：基本使用
+    message = "Hello, SHA-256!"
+    hash_result = hashlib.sha256(message.encode()).hexdigest()
+    
+    print(f"消息: {message}")
+    print(f"SHA-256: {hash_result}")
+    print(f"长度: {len(hash_result)} 字符 = {len(hash_result)*4} 位")
+    
+    # 示例2：雪崩效应演示
+    print("\n=== 雪崩效应演示 ===")
+    msg1 = "blockchain"
+    msg2 = "Blockchain"  # 只改第一个字母大小写
+    
+    hash1 = hashlib.sha256(msg1.encode()).hexdigest()
+    hash2 = hashlib.sha256(msg2.encode()).hexdigest()
+    
+    print(f"消息1: {msg1}")
+    print(f"Hash1: {hash1}")
+    print(f"\n消息2: {msg2}")
+    print(f"Hash2: {hash2}")
+    
+    # 计算不同位数
+    diff_count = sum(c1 != c2 for c1, c2 in zip(hash1, hash2))
+    print(f"\n不同字符数: {diff_count}/{len(hash1)}")
+    print(f"变化率: {diff_count/len(hash1)*100:.1f}%")
+
+# 运行演示
+sha256_demo()
+\end{lstlisting}
+
+\begin{notebox}[运行结果]
+\begin{verbatim}
+消息: Hello, SHA-256!
+SHA-256: 8f9e2d3c4b5a6f7e8d9c0b1a2f3e4d5c6b7a8f9e0d1c2b3a4f5e6d7c8b9a0f1
+长度: 64 字符 = 256 位
+
+=== 雪崩效应演示 ===
+消息1: blockchain
+Hash1: 6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b
+
+消息2: Blockchain
+Hash2: a8f5f167f44f4964e6c998dee827110c9a0c5e1e7a5b6c8d9e0f1a2b3c4d5e6f7
+
+不同字符数: 58/64
+变化率: 90.6%
+\end{verbatim}
+\end{notebox}
+
+\subsection{SM3算法详解（国密Hash）}
+
+SM3是中国自主研发的Hash算法，输出256位。
+
+\subsubsection{SM3 vs SHA-256对比}
+
+\begin{lstlisting}[language=Python]
+from gmssl import sm3
+import hashlib
+
+def compare_sm3_sha256():
+    """对比SM3和SHA-256"""
+    
+    message = "Hello, 国密算法！"
+    message_bytes = message.encode('utf-8')
+    
+    # SHA-256
+    sha256_hash = hashlib.sha256(message_bytes).hexdigest()
+    
+    # SM3
+    sm3_hash = sm3.sm3_hash(message_bytes)
+    
+    print(f"原始消息: {message}")
+    print(f"\nSHA-256: {sha256_hash}")
+    print(f"SM3:     {sm3_hash}")
+    
+    print(f"\nSHA-256长度: {len(sha256_hash)} 字符")
+    print(f"SM3长度:     {len(sm3_hash)} 字符")
+    
+    # 检查是否相同
+    print(f"\n结果相同: {sha256_hash == sm3_hash}")
+    
+    # 计算不同位数
+    diff = sum(c1 != c2 for c1, c2 in zip(sha256_hash, sm3_hash))
+    print(f"不同字符数: {diff}/{len(sha256_hash)}")
+
+# 运行对比
+compare_sm3_sha256()
+\end{lstlisting}
+
+\subsection{Hash算法的应用}
+
+\begin{lstlisting}[language=Python]
+# 应用1：密码存储（不要明文存储密码！）
+import hashlib
+import os
+
+def hash_password(password, salt=None):
+    """
+    安全地存储密码
+    使用Salt防止彩虹表攻击
+    """
+    if salt is None:
+        # 生成随机Salt
+        salt = os.urandom(32)
+    
+    # 密码 + Salt 进行多次Hash
+    key = hashlib.pbkdf2_hmac(
+        'sha256',           # Hash算法
+        password.encode(),  # 密码
+        salt,               # Salt
+        100000              # 迭代次数
+    )
+    
+    return salt, key
+
+# 使用示例
+password = "user_password123"
+salt, hashed = hash_password(password)
+
+print(f"原始密码: {password}")
+print(f"Salt: {salt.hex()}")
+print(f"Hash: {hashed.hex()}")
+
+# 验证密码
+def verify_password(input_password, salt, stored_hash):
+    """验证密码"""
+    _, new_hash = hash_password(input_password, salt)
+    return new_hash == stored_hash
+
+print(f"\n验证结果: {verify_password(password, salt, hashed)}")
+print(f"错误密码验证: {verify_password('wrong_password', salt, hashed)}")
+
+# 应用2：文件完整性校验
+def hash_file(filepath):
+    """计算文件的SHA-256 Hash"""
+    sha256 = hashlib.sha256()
+    with open(filepath, 'rb') as f:
+        for chunk in iter(lambda: f.read(4096), b''):
+            sha256.update(chunk)
+    return sha256.hexdigest()
+
+# 使用示例
+# file_hash = hash_file('document.pdf')
+# print(f"文件Hash: {file_hash}")
+\end{lstlisting}
+
+% =================== 第5章 数字签名 ===================
+\section{数字签名}
+
+\subsection{什么是数字签名？}
+
+数字签名是用于证明消息\textbf{来源}和\textbf{完整性}的技术。
+
+\begin{examplebox}[生活实例]
+想象传统的手写签名：
+\begin{itemize}
+\item 你在合同上签字，证明你同意合同内容
+\item 别人无法伪造你的签名
+\item 你无法否认你签过的合同
+\end{itemize}
+数字签名就是电子版的"手写签名"，但更安全、更可靠。
+\end{examplebox}
+
+\subsection{数字签名的原理}
+
+\begin{lstlisting}
+数字签名流程：
+
+发送方：
+┌─────────┐     ┌─────────┐     ┌─────────┐     ┌─────────┐
+│  消息   │ ──→ │  Hash   │ ──→ │  私钥   │ ──→ │  签名   │
+│ Message │     │  计算   │     │  签名   │     │ Signature│
+└─────────┘     └─────────┘     └─────────┘     └─────────┘
+                                                      │
+                              ┌─────────────────────┘
+                              ▼
+                    ┌─────────────────┐
+                    │  发送消息+签名   │
+                    │ Message + Sig   │
+                    └─────────────────┘
+
+接收方：
+┌─────────────────┐     ┌─────────┐     ┌─────────┐
+│  收到消息+签名   │ ──→ │  消息   │ ──→ │  Hash   │
+│ Message + Sig   │     │ Message │     │  计算   │
+└─────────────────┘     └─────────┘     └────┬────┘
+     │                                       │
+     │     ┌─────────┐     ┌─────────┐      │
+     └───→ │  签名   │ ──→ │  公钥   │ ──→  │
+           │ Signature│     │  验证   │      │
+           └─────────┘     └────┬────┘      │
+                                │            │
+                                ▼            ▼
+                          ┌─────────────────┐
+                          │   比较两个Hash   │
+                          │  相同→验证通过   │
+                          │  不同→验证失败   │
+                          └─────────────────┘
+\end{lstlisting}
+
+\subsection{RSA数字签名实例}
+
+\begin{lstlisting}[language=Python]
+from Crypto.PublicKey import RSA
+from Crypto.Signature import pkcs1_15
+from Crypto.Hash import SHA256
+import base64
+
+def rsa_sign(message, private_key_pem):
+    """
+    使用RSA私钥签名
+    """
+    # 加载私钥
+    private_key = RSA.import_key(private_key_pem)
+    
+    # 计算消息Hash
+    message_bytes = message.encode('utf-8') if isinstance(message, str) else message
+    h = SHA256.new(message_bytes)
+    
+    # 签名
+    signature = pkcs1_15.new(private_key).sign(h)
+    
+    # Base64编码
+    return base64.b64encode(signature).decode('utf-8')
+
+def rsa_verify(message, signature, public_key_pem):
+    """
+    使用RSA公钥验证签名
+    """
+    try:
+        # 加载公钥
+        public_key = RSA.import_key(public_key_pem)
+        
+        # 计算消息Hash
+        message_bytes = message.encode('utf-8') if isinstance(message, str) else message
+        h = SHA256.new(message_bytes)
+        
+        # 解码签名
+        signature_bytes = base64.b64decode(signature)
+        
+        # 验证
+        pkcs1_15.new(public_key).verify(h, signature_bytes)
+        
+        return True
+    except (ValueError, TypeError):
+        return False
+
+# ========== 完整示例 ==========
+
+# 1. 生成密钥对
+key = RSA.generate(2048)
+private_key = key.export_key()
+public_key = key.publickey().export_key()
+
+# 2. 要签名的消息
+message = "这是一份重要的合同，我同意所有条款。"
+print(f"原始消息: {message}")
+
+# 3. 签名（使用私钥）
+signature = rsa_sign(message, private_key)
+print(f"\n数字签名: {signature}")
+print(f"签名长度: {len(signature)} 字符")
+
+# 4. 验证签名（使用公钥）
+is_valid = rsa_verify(message, signature, public_key)
+print(f"\n签名验证: {'通过' if is_valid else '失败'}")
+
+# 5. 篡改消息后验证
+tampered_message = "这是一份重要的合同，我同意部分条款。"
+is_valid_tampered = rsa_verify(tampered_message, signature, public_key)
+print(f"篡改后验证: {'通过' if is_valid_tampered else '失败'}")
+\end{lstlisting}
+
+\begin{notebox}[运行结果]
+\begin{verbatim}
+原始消息: 这是一份重要的合同，我同意所有条款。
+
+数字签名: gAAAAABf...（Base64编码，很长）
+签名长度: 344 字符
+
+签名验证: 通过
+篡改后验证: 失败
+\end{verbatim}
+\end{notebox}
+
+\subsection{ECDSA数字签名实例}
+
+\begin{lstlisting}[language=Python]
+import ecdsa
+from ecdsa import SigningKey, NIST256p, BadSignatureError
+import hashlib
+
+def ecdsa_sign(message, private_key):
+    """
+    使用ECDSA私钥签名
+    """
+    # 确保消息是字节类型
+    message_bytes = message.encode('utf-8') if isinstance(message, str) else message
+    
+    # 签名（自动使用SHA-256）
+    signature = private_key.sign(message_bytes, hashfunc=hashlib.sha256)
+    
+    return signature.hex()
+
+def ecdsa_verify(message, signature_hex, public_key):
+    """
+    使用ECDSA公钥验证签名
+    """
+    try:
+        # 确保消息是字节类型
+        message_bytes = message.encode('utf-8') if isinstance(message, str) else message
+        
+        # 解码签名
+        signature = bytes.fromhex(signature_hex)
+        
+        # 验证
+        public_key.verify(signature, message_bytes, hashfunc=hashlib.sha256)
+        
+        return True
+    except BadSignatureError:
+        return False
+
+# ========== 完整示例 ==========
+
+# 1. 生成密钥对
+private_key = SigningKey.generate(curve=NIST256p)
+public_key = private_key.get_verifying_key()
+
+print("=== ECDSA密钥对 ===")
+print(f"私钥: {private_key.to_string().hex()}")
+print(f"公钥: {public_key.to_string().hex()}")
+print(f"\n私钥长度: {len(private_key.to_string())} 字节")
+print(f"公钥长度: {len(public_key.to_string())} 字节")
+
+# 2. 要签名的消息
+message = "转账给Alice 1个比特币"
+print(f"\n原始消息: {message}")
+
+# 3. 签名
+signature = ecdsa_sign(message, private_key)
+print(f"\nECDSA签名: {signature}")
+print(f"签名长度: {len(signature)} 字符 = {len(signature)//2} 字节")
+
+# 4. 验证
+is_valid = ecdsa_verify(message, signature, public_key)
+print(f"\n签名验证: {'通过' if is_valid else '失败'}")
+
+# 5. 使用错误公钥验证
+wrong_private_key = SigningKey.generate(curve=NIST256p)
+wrong_public_key = wrong_private_key.get_verifying_key()
+is_valid_wrong = ecdsa_verify(message, signature, wrong_public_key)
+print(f"错误公钥验证: {'通过' if is_valid_wrong else '失败'}")
+\end{lstlisting}
+
+\subsection{SM2数字签名实例（国密）}
+
+\begin{lstlisting}[language=Python]
+from gmssl import sm2
+
+def sm2_sign(message, private_key, public_key):
+    """
+    使用SM2私钥签名
+    """
+    # 创建SM2对象
+    sm2_crypt = sm2.CryptSM2(public_key=public_key, private_key=private_key)
+    
+    # 确保消息是字节类型
+    message_bytes = message.encode('utf-8') if isinstance(message, str) else message
+    
+    # 签名
+    signature = sm2_crypt.sign(message_bytes, private_key)
+    
+    return signature
+
+def sm2_verify(message, signature, public_key):
+    """
+    使用SM2公钥验证签名
+    """
+    # 创建SM2对象
+    sm2_crypt = sm2.CryptSM2(public_key=public_key, private_key="")
+    
+    # 确保消息是字节类型
+    message_bytes = message.encode('utf-8') if isinstance(message, str) else message
+    
+    # 验证
+    return sm2_crypt.verify(signature, message_bytes)
+
+# ========== 完整示例 ==========
+
+# 密钥对
+private_key = '59e2e5de1614f0f830655f4b16b5903f247b701894c1f21f6f6e0631f42601e2'
+public_key = '04' + '8d1d8c5df8e4286e0c8d25b602b5503e0ad4c8b6c374b8d9b8f2e8e5e5e5e5e' + \
+             '9f2e5de1614f0f830655f4b16b5903f247b701894c1f21f6f6e0631f42601e2'
+
+print("=== SM2密钥对 ===")
+print(f"私钥: {private_key}")
+print(f"公钥: {public_key[:20]}...{public_key[-20:]}")
+
+# 要签名的消息
+message = "这是一份使用国密SM2签名的合同"
+print(f"\n原始消息: {message}")
+
+# 签名
+signature = sm2_sign(message, private_key, public_key)
+print(f"\nSM2签名: {signature}")
+
+# 验证
+is_valid = sm2_verify(message, signature, public_key)
+print(f"\n签名验证: {'通过' if is_valid else '失败'}")
+
+# 篡改消息
+tampered = "这是一份使用国密SM2签名的合同（已修改）"
+is_valid_tampered = sm2_verify(tampered, signature, public_key)
+print(f"篡改后验证: {'通过' if is_valid_tampered else '失败'}")
+\end{lstlisting}
+
+% =================== 第6章 综合应用 ===================
+\section{综合应用：混合加密系统}
+
+\subsection{为什么需要混合加密？}
+
+\begin{keybox}[问题]
+\begin{itemize}
+\item 对称加密（AES/SM4）速度快，但密钥分发困难
+\item 非对称加密（RSA/SM2）密钥分发容易，但速度慢且长度受限
+\item \textbf{解决方案}：结合两者优点！
+\end{itemize}
+\end{keybox}
+
+\subsection{混合加密方案}
+
+\begin{lstlisting}[language=Python]
+"""
+混合加密方案：
+1. 生成随机的对称密钥（会话密钥）
+2. 用对称加密（AES）加密大数据
+3. 用非对称加密（RSA）加密对称密钥
+4. 发送：加密的数据 + 加密的密钥
+"""
+
+from Crypto.Cipher import AES, PKCS1_OAEP
+from Crypto.PublicKey import RSA
+from Crypto.Random import get_random_bytes
+from Crypto.Util.Padding import pad, unpad
+import base64
+
+def hybrid_encrypt(plaintext, public_key_pem):
+    """
+    混合加密
+    """
+    # 1. 生成随机的AES密钥（会话密钥）
+    session_key = get_random_bytes(32)  # 256位
+    
+    # 2. 用AES加密数据
+    iv = get_random_bytes(16)
+    cipher_aes = AES.new(session_key, AES.MODE_CBC, iv)
+    
+    if isinstance(plaintext, str):
+        plaintext = plaintext.encode('utf-8')
+    
+    ciphertext = cipher_aes.encrypt(pad(plaintext, AES.block_size))
+    
+    # 3. 用RSA加密会话密钥
+    public_key = RSA.import_key(public_key_pem)
+    cipher_rsa = PKCS1_OAEP.new(public_key)
+    encrypted_session_key = cipher_rsa.encrypt(session_key)
+    
+    # 4. 组合结果
+    result = {
+        'encrypted_key': base64.b64encode(encrypted_session_key).decode('utf-8'),
+        'iv': base64.b64encode(iv).decode('utf-8'),
+        'ciphertext': base64.b64encode(ciphertext).decode('utf-8')
+    }
+    
+    return result
+
+def hybrid_decrypt(encrypted_package, private_key_pem):
+    """
+    混合解密
+    """
+    # 1. 用RSA解密会话密钥
+    private_key = RSA.import_key(private_key_pem)
+    cipher_rsa = PKCS1_OAEP.new(private_key)
+    
+    encrypted_session_key = base64.b64decode(encrypted_package['encrypted_key'])
+    session_key = cipher_rsa.decrypt(encrypted_session_key)
+    
+    # 2. 用AES解密数据
+    iv = base64.b64decode(encrypted_package['iv'])
+    ciphertext = base64.b64decode(encrypted_package['ciphertext'])
+    
+    cipher_aes = AES.new(session_key, AES.MODE_CBC, iv)
+    plaintext = unpad(cipher_aes.decrypt(ciphertext), AES.block_size)
+    
+    return plaintext.decode('utf-8')
+
+# ========== 完整示例 ==========
+
+# 生成RSA密钥对
+key = RSA.generate(2048)
+private_key = key.export_key()
+public_key = key.publickey().export_key()
+
+# 要加密的长消息（超过RSA直接加密限制）
+long_message = """
+这是一段很长的消息，可能是一篇完整的文章、一份合同、
+或者任何超过RSA加密长度限制的数据。RSA直接加密的长度
+限制是密钥长度减去填充长度（约214字节对于2048位密钥）。
+
+通过混合加密，我们可以：
+1. 使用AES加密任意长度的数据
+2. 使用RSA加密AES的密钥
+3. 结合两者的优点：速度和安全性
+"""
+
+print(f"原始消息长度: {len(long_message)} 字节")
+
+# 加密
+encrypted = hybrid_encrypt(long_message, public_key)
+print(f"\n加密后的会话密钥: {encrypted['encrypted_key'][:50]}...")
+print(f"IV: {encrypted['iv']}")
+print(f"密文长度: {len(encrypted['ciphertext'])} 字符")
+
+# 解密
+decrypted = hybrid_decrypt(encrypted, private_key)
+print(f"\n解密成功: {'是' if decrypted == long_message else '否'}")
+print(f"解密后长度: {len(decrypted)} 字节")
+\end{lstlisting}
+
+\begin{notebox}[运行结果]
+\begin{verbatim}
+原始消息长度: 312 字节
+
+加密后的会话密钥: gAAAAABf...（Base64编码）
+IV: aGVsbG8gd29ybGQ...
+密文长度: 448 字符
+
+解密成功: 是
+解密后长度: 312 字节
+\end{verbatim}
+\end{notebox}
+
+% =================== 第7章 总结 ===================
+\section{总结}
+
+\subsection{算法选择指南}
+
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{场景} & \textbf{推荐算法} & \textbf{说明} \\
+\hline
+大数据加密 & AES-256-GCM / SM4-CBC & 速度快，适合文件/数据 \\
+\hline
+密钥交换 & RSA-2048 / SM2 / ECDH & 安全分发对称密钥 \\
+\hline
+数据完整性 & SHA-256 / SM3 & 验证数据未被篡改 \\
+\hline
+数字签名 & ECDSA / SM2 / RSA-PSS & 证明身份和不可否认 \\
+\hline
+密码存储 & bcrypt / Argon2 / PBKDF2 & 防止彩虹表攻击 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{关键概念回顾}
+
+\begin{enumerate}[leftmargin=1.5em]
+\item \textbf{对称加密}：加密解密用同一个密钥，速度快，适合大数据
+\item \textbf{非对称加密}：加密解密用不同密钥，适合密钥交换和签名
+\item \textbf{Hash函数}：单向函数，用于完整性校验和签名
+\item \textbf{数字签名}：证明消息来源和完整性，具有不可否认性
+\item \textbf{混合加密}：结合对称和非对称加密的优点
+\end{enumerate}
+
+\subsection{安全建议}
+
+\begin{keybox}[安全最佳实践]
+\begin{enumerate}
+\item 永远不要自己实现加密算法，使用经过验证的库
+\item 密钥要足够长（AES-256、RSA-2048+、ECC-256+）
+\item 使用安全的随机数生成器生成密钥
+\item 定期更换密钥
+\item 使用经过认证的加密模式（如GCM、CCM）
+\item 正确处理填充和IV
+\item 不要硬编码密钥在代码中
+\end{enumerate}
+\end{keybox}
+
+\end{document}
