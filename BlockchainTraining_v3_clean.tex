@@ -1084,29 +1084,170 @@ get()    ->  本地查询，不消耗Gas
 % =================== 第8章 区块链应用领域 ===================
 \section{区块链应用领域}
 
-\subsection{数字货币}
+\subsection{数字货币与金融应用}
+
+\subsubsection{比特币（Bitcoin）}
+
+比特币是第一个成功的加密货币，开创了区块链时代。
+
+\begin{theorybox}
+\textbf{比特币的核心设计：}
+\begin{enumerate}
+\item \textbf{总量恒定}：2100万枚，通过算法控制发行速度
+\item \textbf{减半机制}：每4年产量减半，控制通胀
+\item \textbf{挖矿奖励}：当前区块奖励为6.25 BTC（2024年减半后为3.125 BTC）
+\item \textbf{价值存储}：被称为"数字黄金"，总量稀缺性支撑价值
+\end{enumerate}
+\end{theorybox}
+
+\subsubsection{稳定币（Stablecoin）}
+
+稳定币是为了解决加密货币价格波动问题而设计的代币。
 
 \begin{itemize}[leftmargin=1.5em]
-\item \textbf{比特币}：数字黄金，价值存储
-\item \textbf{稳定币}：USDT、USDC，锚定法币价值
-\item \textbf{央行数字货币（CBDC）}：数字人民币（e-CNY）
+\item \textbf{法币抵押型}：USDT、USDC，1:1锚定美元
+  \begin{itemize}
+  \item 发行方持有等值美元储备
+  \item 用户可随时兑换回法币
+  \item 用于加密货币交易对定价
+  \end{itemize}
+\item \textbf{加密资产抵押型}：DAI，通过超额抵押加密资产发行
+  \begin{itemize}
+  \item 抵押率通常>150\%
+  \item 智能合约自动清算
+  \item 去中心化发行
+  \end{itemize}
+\item \textbf{算法型}：通过算法调节供应量维持价格（风险较高）
 \end{itemize}
 
-\subsection{供应链金融}
+\subsubsection{央行数字货币（CBDC）}
 
 \begin{itemize}[leftmargin=1.5em]
-\item 应收账款上链，可追溯、可拆分
-\item 降低融资成本，提高资金周转效率
-\item 代表：蚂蚁链、微众银行供应链金融平台
+\item \textbf{数字人民币（e-CNY）}：中国央行发行的法定数字货币
+  \begin{itemize}
+  \item 双层运营：央行->商业银行->公众
+  \item 可控匿名：小额匿名，大额可追溯
+  \item 双离线支付：无网络也能完成交易
+  \item 智能合约：支持条件支付、定向用途
+  \end{itemize}
+\item \textbf{与加密货币的区别}：
+  \begin{itemize}
+  \item CBDC是法币，有国家信用背书
+  \item 中心化发行和管理
+  \item 不是投资品，是支付工具
+  \end{itemize}
 \end{itemize}
+
+\begin{keypointbox}
+重点：稳定币是连接传统金融和加密世界的桥梁。CBDC是法币的数字化形式，与比特币等加密货币有本质区别。
+\end{keypointbox}
+
+\subsection{资产数字化与供应链金融}
+
+\subsubsection{资产数字化（Asset Tokenization）}
+
+将实物资产或权益转化为区块链上的数字代币。
+
+\begin{theorybox}
+\textbf{资产数字化的优势：}
+\begin{enumerate}
+\item \textbf{流动性提升}：传统非流动性资产（房地产、艺术品）可以碎片化交易
+\item \textbf{降低门槛}：投资者可以购买资产的一部分（如1/1000的房产份额）
+\item \textbf{透明可追溯}：资产所有权变更全程记录在链上
+\item \textbf{降低中介成本}：减少律师、公证等中介环节
+\end{enumerate}
+\end{theorybox}
+
+\textbf{可数字化的资产类型：}
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{实物资产}：房地产、黄金、艺术品、收藏品
+\item \textbf{金融资产}：股票、债券、基金份额、保险
+\item \textbf{知识产权}：专利、版权、商标
+\item \textbf{其他权益}：会员权益、积分、门票
+\end{itemize}
+
+\subsubsection{供应链金融}
+
+供应链金融解决中小企业融资难问题。
+
+\begin{lstlisting}
+传统供应链金融的问题：
+1. 核心企业确权难：核心企业不愿为上下游中小企业背书
+2. 信息不对称：银行难以验证交易真实性
+3. 融资成本高：中小企业信用不足，利率高
+4. 资金周转慢：应收账款账期长
+
+区块链解决方案：
+1. 应收账款上链：核心企业应付账款转化为链上凭证
+2. 可拆分流转：供应商可以将应收账款拆分转让给多级供应商
+3. 智能合约自动执行：到期自动付款
+4. 降低融资成本：银行可以直接验证交易真实性
+\end{lstlisting}
+
+\textbf{典型案例：}
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{蚂蚁链}："双链通"平台，服务超过1万家中小企业
+\item \textbf{微众银行}：供应链金融平台，基于区块链的应收账款融资
+\item \textbf{京东智臻链}：供应链溯源+金融一体化平台
+\end{itemize}
+
+\begin{keypointbox}
+重点：资产数字化通过Token化提升流动性。供应链金融通过区块链解决信任问题，让核心企业的信用可以传递给多级供应商。
+\end{keypointbox}
 
 \subsection{政务与存证}
 
+\subsubsection{电子政务}
+
+区块链在政务服务中的应用：
+
 \begin{itemize}[leftmargin=1.5em]
-\item 电子证照上链，防篡改、易验证
-\item 司法存证，提高证据可信度
-\item 代表：北京互联网法院"天平链"
+\item \textbf{电子证照}
+  \begin{itemize}
+  \item 身份证、户口本、结婚证等上链存储
+  \item 跨部门共享，减少重复提交
+  \item 防篡改，提高可信度
+  \item 代表：广东省"粤省事"、浙江省"浙里办"
+  \end{itemize}
+\item \textbf{政务数据共享}
+  \begin{itemize}
+  \item 打破部门数据孤岛
+  \item 数据使用可追溯，保护隐私
+  \item 提高政务服务效率
+  \end{itemize}
+\item \textbf{公共资源交易}
+  \begin{itemize}
+  \item 招投标信息上链，防止暗箱操作
+  \item 确保公平公正
+  \end{itemize}
 \end{itemize}
+
+\subsubsection{司法存证}
+
+\begin{theorybox}
+\textbf{区块链存证的优势：}
+\begin{enumerate}
+\item \textbf{时间戳证明}：精确记录证据产生时间
+\item \textbf{防篡改}：证据一旦上链无法修改
+\item \textbf{司法认可}：最高人民法院已明确区块链存证的法律效力
+\item \textbf{降低成本}：无需公证处，降低存证成本
+\end{enumerate}
+\end{theorybox}
+
+\textbf{典型案例：}
+\begin{itemize}[leftmargin=1.5em]
+\item \textbf{北京互联网法院"天平链"}：全国首个司法区块链平台
+  \begin{itemize}
+  \item 已存证超过1亿条数据
+  \item 支持版权保护、网络侵权等案件
+  \end{itemize}
+\item \textbf{杭州互联网法院}：司法区块链平台
+\item \textbf{广州互联网法院}："网通法链"平台
+\end{itemize}
+
+\begin{keypointbox}
+重点：区块链存证已被司法认可。最高法规定：当事人提交的区块链存证证据，经核验一致的，法院应当确认其真实性。
+\end{keypointbox}
 
 \subsection{数字身份}
 
@@ -1456,6 +1597,172 @@ print(f"区块链有效: {blockchain.is_valid()}")
 for block in blockchain.chain:
     print(f"区块{block.index}: {block.hash[:20]}...")
 \end{lstlisting}
+
+\subsection{区块链浏览器实操}
+
+\subsubsection{比特币浏览器使用}
+
+以 blockchain.com 为例，学习如何查询交易信息。
+
+\begin{lstlisting}
+实操步骤：
+1. 打开 blockchain.com/explorer
+2. 在搜索框输入交易ID（TxID）
+   示例：4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b
+   （这是比特币创世区块的第一笔交易）
+
+3. 查看交易详情：
+   - 交易哈希（Transaction Hash）
+   - 区块高度（Block Height）
+   - 确认数（Confirmations）
+   - 发送方/接收方地址
+   - 交易金额
+   - 交易费用
+   - 时间戳
+
+4. 查看区块信息：
+   - 区块哈希
+   - 前一区块哈希（形成链式结构）
+   - Merkle Root
+   - Nonce
+   - 难度目标
+   - 包含的交易数量
+\end{lstlisting}
+
+\subsubsection{以太坊浏览器使用}
+
+以 etherscan.io 为例。
+
+\begin{lstlisting}
+实操步骤：
+1. 打开 etherscan.io
+2. 查询账户地址：
+   示例：0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb
+   
+3. 查看账户信息：
+   - ETH余额
+   - 交易数量
+   - 持有的代币（Token）
+   - 交易历史
+
+4. 查询智能合约：
+   - 合约代码（Verified Source Code）
+   - 合约ABI
+   - 合约创建交易
+   - 合约调用记录
+
+5. 查看Gas费用：
+   - Gas Price（Gwei）
+   - Gas Limit
+   - 实际消耗的Gas
+   - 交易总费用 = Gas Used × Gas Price
+\end{lstlisting}
+
+\begin{keypointbox}
+重点：区块链浏览器是查看链上数据的窗口。比特币浏览器主要看UTXO和区块信息，以太坊浏览器主要看账户、智能合约和Gas费用。
+\end{keypointbox}
+
+\subsection{数字签名实操}
+
+\subsubsection{ECDSA签名与验证（Python实现）}
+
+\begin{lstlisting}
+import hashlib
+import ecdsa
+from ecdsa import SigningKey, VerifyingKey, SECP256k1
+
+def generate_keypair():
+    """生成密钥对"""
+    # 生成私钥
+    private_key = SigningKey.generate(curve=SECP256k1)
+    # 从私钥生成公钥
+    public_key = private_key.get_verifying_key()
+    return private_key, public_key
+
+def sign_message(private_key, message):
+    """使用私钥签名消息"""
+    # 计算消息Hash
+    message_hash = hashlib.sha256(message.encode()).digest()
+    # 签名
+    signature = private_key.sign(message_hash, hashfunc=hashlib.sha256)
+    return signature
+
+def verify_signature(public_key, message, signature):
+    """使用公钥验证签名"""
+    try:
+        message_hash = hashlib.sha256(message.encode()).digest()
+        # 验证签名
+        public_key.verify(signature, message_hash, hashfunc=hashlib.sha256)
+        return True
+    except ecdsa.BadSignatureError:
+        return False
+
+# 实操示例
+if __name__ == "__main__":
+    # 1. 生成密钥对
+    private_key, public_key = generate_keypair()
+    print(f"私钥: {private_key.to_string().hex()}")
+    print(f"公钥: {public_key.to_string().hex()}")
+    
+    # 2. 要签名的消息
+    message = "转账给Alice 1个比特币"
+    print(f"\n原始消息: {message}")
+    
+    # 3. 签名
+    signature = sign_message(private_key, message)
+    print(f"签名: {signature.hex()}")
+    
+    # 4. 验证签名
+    is_valid = verify_signature(public_key, message, signature)
+    print(f"\n签名验证结果: {is_valid}")
+    
+    # 5. 篡改消息后再验证
+    tampered_message = "转账给Bob 100个比特币"
+    is_valid_tampered = verify_signature(public_key, tampered_message, signature)
+    print(f"篡改后验证结果: {is_valid_tampered}")
+\end{lstlisting}
+
+\subsubsection{SM2签名与验证（国密算法）}
+
+\begin{lstlisting}
+from gmssl import sm2, func
+
+def sm2_sign_verify():
+    """SM2签名与验证示例"""
+    # 密钥对（十六进制表示）
+    private_key = '59e2e5de1614f0f830655f4b16b5903f247b701894c1f21f6f6e0631f42601e2'
+    public_key = '04' + '8d1d8c5df8e4286e0c8d25b602b5503e0ad4c8b6c374b8d9b8f2e8e5e5e5e5e' + \
+                 '9f2e5de1614f0f830655f4b16b5903f247b701894c1f21f6f6e0631f42601e2'
+    
+    # 创建SM2对象
+    sm2_crypt = sm2.CryptSM2(public_key=public_key, private_key=private_key)
+    
+    # 要签名的消息
+    message = b"转账给Alice 100元"
+    
+    # 签名
+    signature = sm2_crypt.sign(message, private_key)
+    print(f"SM2签名: {signature.hex()}")
+    
+    # 验证签名
+    result = sm2_crypt.verify(signature, message)
+    print(f"SM2签名验证结果: {result}")
+    
+    return result
+
+# 注意：实际使用时需要安装gmssl库
+# pip install gmssl
+\end{lstlisting}
+
+\begin{theorybox}
+\textbf{签名验证的核心逻辑：}
+\begin{enumerate}
+\item \textbf{签名过程}：私钥 + 消息Hash → 签名值(r, s)
+\item \textbf{验证过程}：公钥 + 消息Hash + 签名值 → 验证通过/失败
+\item \textbf{安全性}：没有私钥无法生成有效签名，但任何人都可以用公钥验证
+\item \textbf{不可抵赖}：只有私钥持有者能生成签名，签名者无法否认
+\end{enumerate}
+\end{theorybox}
 
 \subsection{备考建议}
 
